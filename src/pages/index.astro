@@ -1,11 +1,66 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
+import { client } from '../lib/sanity';
+import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import Hero from '@/components/Hero.astro';
+import Services from '@/components/Services.astro';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const projects = await client.fetch(`*[_type == "project"] | order(_createdAt desc) {
+  title,
+  description,
+  category,
+  "slug": slug.current,
+  "imageUrl": image.asset->url
+}`);
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="Pixelflow Studio | Portofoliu">
+	  <Hero />
+	  <Services /> <main class="max-w-7xl mx-auto px-6 py-20"></main>
+  <main class="max-w-7xl mx-auto px-6 py-20">
+    <header class="mb-20 space-y-4">
+      <Badge variant="outline" className="border-zinc-800 text-zinc-400">2026 Edition</Badge>
+      <h1 class="text-6xl font-black tracking-tighter text-white">PIXELFLOW<span class="text-zinc-600">.</span></h1>
+      <p class="text-zinc-500 max-w-md text-lg">Dezvoltăm produse digitale care contează. Simplu, rapid și estetic.</p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+      {projects.map((project: any) => (
+        <Card className="bg-zinc-900/50 border-zinc-800 hover:border-zinc-700 transition-all group overflow-hidden">
+          <div class="aspect-video overflow-hidden">
+            {project.imageUrl && (
+              <img 
+                src={project.imageUrl}
+                alt={project.title} 
+                class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500 scale-105 group-hover:scale-100"
+              />
+            )}
+          </div>
+          
+          <CardHeader>
+            <div class="flex justify-between items-start mb-2">
+              <Badge variant="secondary" className="bg-zinc-800 text-zinc-300 border-none uppercase text-[10px] tracking-widest font-bold">
+                {project.category}
+              </Badge>
+            </div>
+            <CardTitle className="text-2xl text-white group-hover:text-blue-400 transition-colors">
+              {project.title}
+            </CardTitle>
+            <CardDescription className="text-zinc-500 line-clamp-2">
+              {project.description}
+            </CardDescription>
+          </CardHeader>
+          <CardFooter className="pt-0">
+            <a href={`/proiect/${project.slug}`} class="w-full">
+              <Button variant="ghost" className="text-zinc-400 hover:text-white p-0 flex gap-2">
+                Vezi Proiectul <span class="group-hover:translate-x-1 transition-transform">→</span>
+              </Button>
+            </a>
+          </CardFooter>
+        </Card>
+      ))}
+    </div>
+  </main>
 </Layout>
