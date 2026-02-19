@@ -14,11 +14,11 @@ const navItems = [
 
 <nav
   id="main-nav"
-  class="fixed top-8 left-0 right-0 z-[100] flex justify-center px-6 transition-all duration-500 ease-out"
+  class="fixed top-8 left-0 right-0 z-100 flex justify-center px-6 transition-all duration-500 ease-out"
 >
   <div
     id="nav-container"
-    class="w-full max-w-6xl h-14 bg-zinc-950/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-between pl-2 pr-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 ease-in-out relative z-[110]"
+    class="w-full max-w-6xl h-14 bg-zinc-950/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-between pl-2 pr-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 ease-in-out relative z-110"
   >
     <a href="#home" class="flex items-center gap-3 pl-4 shrink-0">
       <div class="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black italic text-[12px]">
@@ -50,7 +50,7 @@ Contact  <ArrowUpRight className="ml-2 w-3.5 h-3.5 text-zinc-400" />
 </Button>
       <button
         id="mobile-menu-toggle"
-        class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white transition-all outline-none z-[120]"
+        class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white transition-all outline-none z-120"
         aria-label="Toggle Menu"
       >
         <Menu className="w-5 h-5 menu-icon" />
@@ -60,7 +60,7 @@ Contact  <ArrowUpRight className="ml-2 w-3.5 h-3.5 text-zinc-400" />
 
     <div
       id="mobile-menu"
-      class="absolute top-[calc(100%+1rem)] left-0 right-0 bg-zinc-900/95 backdrop-blur-3xl border border-white/10 rounded-[2rem] p-8 md:hidden opacity-0 translate-y-[-20px] pointer-events-none transition-all duration-500 z-[100] shadow-2xl shadow-black"
+      class="absolute top-[calc(100%+1rem)] left-0 right-0 bg-zinc-900/95 backdrop-blur-3xl border border-white/10 rounded-4xl p-8 md:hidden opacity-0 -translate-y-5 pointer-events-none transition-all duration-500 z-100 shadow-2xl shadow-black"
     >
       <nav class="flex flex-col gap-6">
         {navItems.map((item) => (
@@ -85,7 +85,7 @@ Contact  <ArrowUpRight className="ml-2 w-3.5 h-3.5 text-zinc-400" />
 
 <div
   id="nav-overlay"
-  class="fixed inset-0 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 z-[90] md:hidden"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 z-90 md:hidden"
 ></div>
 
 <script>

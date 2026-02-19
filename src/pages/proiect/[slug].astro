@@ -53,11 +53,11 @@ const project = await client.fetch(`*[_type == "project" && slug.current == $slu
       </div>
 
       <div class="relative group">
-        <div class="absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-[2rem] blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+        <div class="absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-4xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
         <img 
           src={project.imageUrl} 
           alt={project.title} 
-          class="relative w-full aspect-4/5 object-cover rounded-[2rem] border border-white/10 shadow-2xl"
+          class="relative w-full aspect-4/5 object-cover rounded-4xl border border-white/10 shadow-2xl"
         />
       </div>
     </article>
