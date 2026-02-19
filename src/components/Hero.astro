@@ -1,6 +1,8 @@
 ---
-// Asigură-te că imaginea "flat" (cea din image_3.png) este salvată ca "unnamed.jpg" în folderul /public
-const { dashboardImage = "/unnamed.jpg" } = Astro.props;
+import { Button } from "@/components/ui/button";
+import { MoveRight, ExternalLink } from "lucide-react";
+
+const { dashboardImage = "/dashboard.jpg" } = Astro.props;
 
 const avatars = [
   "https://i.pravatar.cc/150?u=a042581f4e29026704d",
@@ -11,7 +13,6 @@ const avatars = [
 ---
 
 <section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-[#030710] py-20 lg:py-0 font-sans">
-  {/* Lumina ambientală de fundal */}
   <div class="absolute top-0 left-[-10%] w-[50vw] h-[50vh] bg-blue-900/10 blur-[130px] rounded-full pointer-events-none"></div>
 
   <div class="container mx-auto px-6 lg:px-10 relative z-10 max-w-[1400px]">
@@ -30,19 +31,31 @@ const avatars = [
             viziunea în <span class="text-[#38bdf8]">profit.</span>
           </h1>
           
-          <p class="text-[#94a3b8] text-lg lg:text-[20px] max-w-[480px] leading-[1.6] font-light">
-            Nu facem doar site-uri. Construim platforme ultra-rapide cu <span class="text-white font-medium">Astro</span> și <span class="text-white font-medium">Sanity</span>.
+          <p class="text-[#94a3b8] text-lg lg:text-[20px] max-w-[520px] leading-[1.6] font-light">
+            Nu vindem doar site-uri, livrăm <span class="text-white font-semibold">performanță măsurabilă</span>. Arhitecturi moderne ce transformă prima impresie într-o <span class="text-[#38bdf8] font-semibold">relație pe termen lung</span>.
           </p>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 pt-2">
-          <button class="bg-[#0052FF] hover:bg-[#0047E1] text-white rounded-[14px] px-8 py-4 text-[17px] font-semibold transition-all shadow-[0_0_40px_-10px_rgba(0,82,255,0.6)] flex items-center justify-center gap-2 group">
-            Începe un project <span class="font-normal text-xl leading-none transition-transform group-hover:translate-x-1">→</span>
-          </button>
-          
-          <button class="bg-transparent text-white border border-white/10 hover:bg-white/5 rounded-[14px] px-8 py-4 text-[17px] font-semibold transition-all">
-            Portofoliu
-          </button>
+        <div class="flex flex-col sm:flex-row gap-5 pt-4">
+          <Button 
+            className="relative h-14 px-8 rounded-xl bg-[#0052FF] hover:bg-[#0047E1] text-white font-bold text-lg shadow-[0_0_30px_-5px_rgba(0,82,255,0.5)] transition-all hover:shadow-[0_0_50px_-5px_rgba(0,82,255,0.8)] hover:scale-[1.02] active:scale-[0.98] group overflow-hidden"
+          >
+            <span class="absolute inset-0 w-full h-full bg-gradient-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer"></span>
+            <span class="relative flex items-center gap-2">
+              Începe un proiect 
+              <MoveRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" />
+            </span>
+          </Button>
+
+          <Button 
+            variant="outline" 
+            className="h-14 px-8 rounded-xl border-white/10 bg-white/5 text-white font-bold text-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98] group"
+          >
+            <span class="flex items-center gap-2">
+              Portofoliu
+              <ExternalLink className="w-4 h-4 opacity-50 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </span>
+          </Button>
         </div>
 
         <div class="flex items-center gap-4 pt-6">
@@ -62,20 +75,12 @@ const avatars = [
         </div>
       </div>
 
-      <div class="lg:col-span-7 relative group [perspective:1200px] mt-12 lg:mt-0 lg:ml-10">
+      <div class="lg:col-span-7 relative group [perspective:1200px] mt-12 lg:mt-0 lg:ml-10 text-left">
         <div class="relative transition-all duration-700 ease-out [transform-style:preserve-3d] [transform:rotateY(20deg)_rotateX(6deg)_rotateZ(-1deg)] group-hover:[transform:rotateY(16deg)_rotateX(4deg)_scale(1.02)]">
           
-          {/* Strălucirea difuză mare din spatele totului (existentă anterior) */}
           <div class="absolute -inset-4 bg-[#38bdf8]/15 blur-[50px] -z-20 rounded-3xl [transform:translateZ(-30px)]"></div>
-
-          {/* >>> NOUL GLOW EXTERIOR (Conturul luminos albastru) <<< */}
-          {/* Este un div plasat exact în spatele cardului (-z-10), puțin mai mare (-inset-[1px]),
-              cu un blur puternic și culoare albastră intensă. Se rotește odată cu containerul. */}
           <div class="absolute -inset-[1px] bg-blue-600/60 rounded-[16px] blur-md -z-10 [transform:translateZ(-1px)]"></div>
 
-
-          {/* >>> CARDUL PRINCIPAL <<< */}
-          {/* Am scos shadow-ul vechi pentru că acum avem glow-ul dedicat. Am păstrat border-ul subtil. */}
           <div class="relative z-20 rounded-[14px] overflow-hidden border border-[#1e3a8a]/50 bg-[#0A0E17] ring-1 ring-white/5">
             <div class="h-9 bg-[#0F1523] border-b border-white/5 flex items-center px-4">
               <div class="flex gap-2.5">
@@ -85,21 +90,10 @@ const avatars = [
               </div>
             </div>
             <div class="relative aspect-video w-full bg-[#0A0E17]">
-              <img 
-                src={dashboardImage} 
-                alt="Dashboard" 
-                class="w-full h-full object-cover"
-              />
+              <img src={dashboardImage} alt="Dashboard" class="w-full h-full object-cover" />
             </div>
           </div>
 
-
-          {/* >>> NOUL WIDGET "GROWTH" (Indicele stânga jos) <<< */}
-          {/* - absolute bottom-6 left-6: Poziționare în colț.
-              - z-30: Să fie peste card.
-              - [transform:translateZ(30px)]: CHEIA efectului 3D. Îl face să plutească mult în fața dashboard-ului.
-              - Design copiat din imaginea de referință.
-          */}
           <div class="absolute bottom-6 left-6 z-30 bg-[#0F1523]/95 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-3 flex items-center gap-3 shadow-xl shadow-black/50 [transform:translateZ(30px)] group-hover:[transform:translateZ(40px)] transition-transform duration-700">
             <div class="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center border border-blue-500/30">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-blue-500">
@@ -107,17 +101,12 @@ const avatars = [
               </svg>
             </div>
             <div>
-              <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider leading-none mb-1">Growth</p>
+              <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider leading-none mb-1 text-left">Growth</p>
               <p class="text-lg text-white font-bold leading-none">+28.4%</p>
             </div>
           </div>
 
-
-          {/* >>> REFLEXIA <<< */}
-          <div 
-            class="absolute top-[calc(100%-1px)] left-0 w-full h-full origin-top scale-y-[-1] pointer-events-none z-10 opacity-60"
-            style="-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%);"
-          >
+          <div class="absolute top-[calc(100%-1px)] left-0 w-full h-full origin-top scale-y-[-1] pointer-events-none z-10 opacity-60" style="-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%);">
             <div class="rounded-[14px] overflow-hidden border border-[#1e3a8a]/20 bg-[#0A0E17] blur-[1px] ring-1 ring-white/5">
               <div class="h-9 bg-[#0F1523] border-b border-white/5 flex items-center px-4">
                 <div class="flex gap-2.5 opacity-40">
