@@ -15,10 +15,8 @@ interface Project {
 const { projects = [] } = Astro.props as { projects: Project[] };
 ---
 
-<section id="work" class="relative w-full bg-[#030712] py-32 scroll-mt-24 overflow-hidden">
+<section id="work" class="relative w-full bg-linear-to-b from-[#000000] to-[#030712] py-32 scroll-mt-24 overflow-hidden">
   
-  <div class="absolute -top-40 -right-40 w-[600px] h-[600px] bg-[#0052FF]/10 rounded-full blur-[160px] pointer-events-none"></div>
-  <div class="absolute bottom-0 left-0 w-[500px] h-[500px] bg-[#38bdf8]/10 rounded-full blur-[140px] pointer-events-none"></div>
 
   <div class="max-w-7xl mx-auto px-6 relative z-10">
     
