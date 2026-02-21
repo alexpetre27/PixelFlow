@@ -1,4 +1,7 @@
 ﻿---
+import '@/styles/projects.css';
+import projectScriptUrl from '@/scripts/project.ts?url';
+
 interface Project {
   title: string;
   category?: string;
@@ -10,12 +13,22 @@ interface Project {
   github?: string;
 }
 
-const { projects = [] } = Astro.props as { projects?: Project[] };
+const { projects = [], pinnedProjectTitle = 'MicroManager' } = Astro.props as {
+  projects?: Project[];
+  pinnedProjectTitle?: string;
+};
+
+const normalizedPinnedTitle = pinnedProjectTitle.trim().toLowerCase();
+const orderedProjects = [...projects].sort((a, b) => {
+  const aPinned = a.title.trim().toLowerCase() === normalizedPinnedTitle ? 1 : 0;
+  const bPinned = b.title.trim().toLowerCase() === normalizedPinnedTitle ? 1 : 0;
+  return bPinned - aPinned;
+});
 
 const getImageUrl = (project: Project) => {
   if (project.imageUrl) return project.imageUrl;
   if (project.image) return project.image;
-  if (project.link) return `https://image.thum.io/get/width/1000/crop/800/${project.link}`;
+  if (project.link) return `https://image.thum.io/get/width/1400/crop/950/no_cookie/${project.link}`;
   return null;
 };
 
@@ -26,160 +39,170 @@ const getPrimaryLink = (project: Project) => {
   return null;
 };
 
-const isExternalLink = (url: string | null) => Boolean(url && /^https?:\/\//.test(url));
+const isExternal = (url: string | null) => Boolean(url && /^https?:\/\//.test(url));
+
+const categories = Array.from(
+  new Set(orderedProjects.map((project) => (project.category || 'General').trim()))
+).sort((a, b) => a.localeCompare(b, 'ro'));
 ---
 
-<section id="work" data-projects-carousel class="relative w-full bg-[#020617] py-24 overflow-hidden font-sans">
-  <div class="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+<section id="work" data-projects-editorial class="relative w-full overflow-hidden bg-[linear-gradient(180deg,#000000_0%,#160a28_92%,#2a0b45_180%)] py-24">
+  <div class="absolute -right-20 bottom-10 h-80 w-80 rounded-full bg-[#38bdf8]/20 blur-[80px] pointer-events-none"></div>
 
-  <header class="text-center mb-16 px-6 relative z-20">
-    <span class="text-[#38bdf8] text-xs font-bold tracking-[0.2em] uppercase mb-4 block">Portofoliu</span>
-    <h2 class="text-4xl md:text-6xl font-black text-white mb-6 tracking-wide uppercase">Selected Works</h2>
-    <p class="text-zinc-400 max-w-2xl mx-auto text-sm md:text-base leading-relaxed">
-      Exploreaza cele mai recente produse digitale.
-    </p>
-  </header>
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
+    <header class="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+      <div>
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.14em] text-zinc-300">
+          <span class="h-2 w-2 rounded-full bg-[#38bdf8]"></span>
+          Project Stories
+        </span>
+        <h2 class="mt-4 max-w-3xl text-4xl font-extrabold tracking-tight text-white md:text-6xl">
+          O directie editoriala,
+          <span class="text-transparent bg-clip-text bg-linear-to-r from-[#38bdf8] to-[#0052FF]"> cu ritm vizual clar.</span>
+        </h2>
+      
+      </div>
 
-  <div class="relative w-full group">
-    <button
-      data-carousel-prev
-      class="hidden md:flex absolute left-8 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center text-2xl hover:bg-[#38bdf8] hover:text-black transition-all"
-      aria-label="Proiectul anterior"
-    >
-      ‹
-    </button>
-    <button
-      data-carousel-next
-      class="hidden md:flex absolute right-8 top-1/2 -translate-y-1/2 z-50 w-12 h-12 rounded-full bg-white/5 border border-white/10 text-white items-center justify-center text-2xl hover:bg-[#38bdf8] hover:text-black transition-all"
-      aria-label="Proiectul urmator"
-    >
-      ›
-    </button>
+      <div class="rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right backdrop-blur-sm">
+        <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-500">Total proiecte</p>
+        <p class="text-3xl font-black text-white">{orderedProjects.length}</p>
+      </div>
+    </header>
 
-    <div data-carousel-track class="flex overflow-x-auto snap-x snap-mandatory scroll-smooth no-scrollbar py-12 px-[calc(50vw-140px)] md:px-[calc(50vw-240px)] gap-4">
-      {projects.map((project, index) => {
-        const href = getPrimaryLink(project);
-        const external = isExternalLink(href);
+    <div class="rounded-4xl border border-white/10 bg-[#0A0E17]/75 p-5 shadow-2xl shadow-black/40 backdrop-blur-sm md:p-7">
+      <div class="mb-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
+        <input
+          type="text"
+          data-project-search
+          placeholder="Cauta proiect dupa nume sau descriere..."
+          class="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white placeholder:text-zinc-500 outline-none transition-all focus:border-[#38bdf8]/40 focus:bg-white/[0.07]"
+        />
 
-        return (
-          <div class="carousel-item flex-none w-[280px] md:w-[480px] snap-center transition-all duration-500 ease-out opacity-30 scale-90 blur-[1px]" data-index={index}>
-            <article class="relative flex flex-col h-[480px] md:h-[520px] bg-[#0b1120] rounded-[1.5rem] overflow-hidden border border-white/5 shadow-2xl">
-              {href && (
-                <a
-                  href={href}
-                  target={external ? '_blank' : undefined}
-                  rel={external ? 'noopener noreferrer' : undefined}
-                  class="absolute inset-0 z-30"
-                  aria-label={`Deschide ${project.title}`}
-                ></a>
-              )}
+        <div class="flex h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 text-[11px] uppercase tracking-[0.14em] text-zinc-300">
+          <span>Rezultate</span>
+          <span data-results-count class="font-bold text-[#38bdf8]">{orderedProjects.length}</span>
+        </div>
+      </div>
 
-              <figure class="h-56 md:h-64 bg-slate-950 overflow-hidden">
-                {getImageUrl(project) ? (
-                  <img
-                    src={getImageUrl(project)}
-                    alt={project.title}
-                    class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div class="h-full flex items-center justify-center text-zinc-600 text-xs font-bold uppercase">Fara previzualizare</div>
-                )}
-              </figure>
+      <div class="mb-7 flex gap-2 overflow-x-auto no-scrollbar pb-1">
+        <button type="button" data-category-filter="all" class="category-chip is-active shrink-0 h-9 rounded-full border border-[#38bdf8]/35 bg-[#38bdf8]/15 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-[#bae6fd]">
+          Toate
+        </button>
+        {categories.map((category) => (
+          <button type="button" data-category-filter={category} class="category-chip shrink-0 h-9 rounded-full border border-white/10 bg-white/5 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-[#38bdf8]/35 hover:text-[#bae6fd]">
+            {category}
+          </button>
+        ))}
+      </div>
 
-              <div class="p-6 md:p-8 flex flex-col flex-grow">
-                <span class="text-[#38bdf8] text-[10px] md:text-xs font-bold tracking-widest uppercase mb-2">{project.category || 'General'}</span>
-                <h3 class="text-xl md:text-2xl font-bold text-white mb-3">{project.title}</h3>
-                <p class="text-zinc-400 text-xs md:text-sm line-clamp-3 leading-relaxed">{project.description || ''}</p>
+      <div data-project-list class="space-y-5">
+        {orderedProjects.map((project, index) => {
+          const href = getPrimaryLink(project);
+          const external = isExternal(href);
+          const image = getImageUrl(project);
+          const category = (project.category || 'General').trim();
+          const isReverse = index % 2 !== 0;
+
+          return (
+            <article
+              data-project-item
+              data-title={project.title.toLowerCase()}
+              data-description={(project.description || '').toLowerCase()}
+              data-category={category}
+              data-side={isReverse ? 'right' : 'left'}
+              class="project-item rounded-3xl border border-white/10 bg-[#0D1322]/80 p-3 md:p-4"
+            >
+              <div class={`grid gap-4 md:grid-cols-12 ${isReverse ? 'md:[&>figure]:order-2 md:[&>div]:order-1' : ''}`}>
+                <figure class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 md:col-span-7 md:h-64">
+                  {image ? (
+                    <img src={image} alt={project.title} class="h-full w-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
+                  ) : (
+                    <div class="flex h-full items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-zinc-600">Fara imagine</div>
+                  )}
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                </figure>
+
+                <div class="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:col-span-5">
+                  <div>
+                    <div class="mb-3 flex items-center justify-between gap-3">
+                      <span class="inline-flex rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300">
+                        {category}
+                      </span>
+                      <span class="text-[10px] font-mono uppercase tracking-[0.12em] text-zinc-500">#{(index + 1).toString().padStart(2, '0')}</span>
+                    </div>
+
+                    <h3 class="text-2xl font-extrabold tracking-tight text-white line-clamp-2">{project.title}</h3>
+                    <p class="mt-3 line-clamp-4 text-sm leading-relaxed text-[#94a3b8]">{project.description || 'Fara descriere disponibila.'}</p>
+                  </div>
+
+                  <div class="mt-5 flex items-center justify-between">
+                    <span class="text-[10px] uppercase tracking-[0.12em] text-zinc-500">Story Card</span>
+
+                    {href ? (
+                      <a
+                        href={href}
+                        target={external ? '_blank' : undefined}
+                        rel={external ? 'noopener noreferrer' : undefined}
+                        class="inline-flex items-center gap-2 rounded-xl bg-[#0052FF] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#38bdf8]"
+                      >
+                        Vezi proiect
+                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M7 7h10v10"></path></svg>
+                      </a>
+                    ) : (
+                      <span class="inline-flex rounded-xl border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500">Fara link</span>
+                    )}
+                  </div>
+                </div>
               </div>
             </article>
-          </div>
-        );
-      })}
+          );
+        })}
+
+        {Array.from({ length: 3 }).map((_, index) => (
+          <article
+            data-project-placeholder
+            data-side={index % 2 === 0 ? 'left' : 'right'}
+            class="project-item project-placeholder is-hidden rounded-3xl border border-white/10 bg-[#0D1322]/60 p-3 md:p-4"
+            aria-hidden="true"
+          >
+            <div class="grid gap-4 md:grid-cols-12">
+              <div class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] md:col-span-7 md:h-64">
+                <div class="skeleton-line h-full w-full"></div>
+              </div>
+
+              <div class="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:col-span-5">
+                <div>
+                  <div class="mb-3 h-6 w-24 rounded-full skeleton-line"></div>
+                  <div class="h-8 w-3/4 rounded-md skeleton-line"></div>
+                  <div class="mt-3 h-4 w-full rounded-md skeleton-line"></div>
+                  <div class="mt-2 h-4 w-5/6 rounded-md skeleton-line"></div>
+                  <div class="mt-2 h-4 w-2/3 rounded-md skeleton-line"></div>
+                </div>
+
+                <div class="mt-5 h-9 w-28 rounded-xl skeleton-line"></div>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <div class="mt-7 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
+        <p data-page-label class="text-xs uppercase tracking-[0.14em] text-zinc-400">Pagina 1 din 1</p>
+        <div class="flex w-full items-center gap-2 sm:w-auto">
+          <button type="button" data-page-prev class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-[#38bdf8]/35 hover:text-[#bae6fd] disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
+            Inapoi
+          </button>
+          <button type="button" data-page-next class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-[#38bdf8]/35 hover:text-[#bae6fd] disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
+            Inainte
+          </button>
+        </div>
+      </div>
+
+      <div data-empty-state class="hidden mt-5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-8 text-center text-sm text-zinc-400">
+        Nu am gasit proiecte pentru filtrul curent.
+      </div>
     </div>
   </div>
 </section>
 
-<style>
-  .no-scrollbar::-webkit-scrollbar { display: none; }
-  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-  .carousel-item.is-active {
-    opacity: 1 !important;
-    transform: scale(1) !important;
-    filter: blur(0);
-    border-color: rgba(56, 189, 248, 0.2);
-  }
-</style>
-
-<script>
-const initCarousel = (root) => {
-  if (!root || root.dataset.carouselInit === 'true') return;
-
-  const track = root.querySelector('[data-carousel-track]');
-  const prevBtn = root.querySelector('[data-carousel-prev]');
-  const nextBtn = root.querySelector('[data-carousel-next]');
-  if (!track) return;
-
-  const items = Array.from(track.querySelectorAll('.carousel-item'));
-  if (items.length === 0) return;
-
-  root.dataset.carouselInit = 'true';
-  let currentIndex = 0;
-  let scrollRaf = null;
-
-  const setActiveClass = (index) => {
-    items.forEach((item, itemIndex) => item.classList.toggle('is-active', itemIndex === index));
-  };
-
-  const centerItem = (index, behavior = 'smooth') => {
-    const clamped = (index + items.length) % items.length;
-    const item = items[clamped];
-    item.scrollIntoView({ behavior, block: 'nearest', inline: 'center' });
-    currentIndex = clamped;
-    setActiveClass(clamped);
-  };
-
-  const syncIndexFromScroll = () => {
-    const trackCenter = track.scrollLeft + track.clientWidth / 2;
-    let nearestIndex = 0;
-    let nearestDistance = Infinity;
-
-    items.forEach((item, index) => {
-      const itemCenter = item.offsetLeft + item.clientWidth / 2;
-      const distance = Math.abs(itemCenter - trackCenter);
-      if (distance < nearestDistance) {
-        nearestDistance = distance;
-        nearestIndex = index;
-      }
-    });
-
-    if (nearestIndex !== currentIndex) {
-      currentIndex = nearestIndex;
-      setActiveClass(currentIndex);
-    }
-  };
-
-  track.addEventListener('scroll', () => {
-    if (scrollRaf) cancelAnimationFrame(scrollRaf);
-    scrollRaf = requestAnimationFrame(syncIndexFromScroll);
-  }, { passive: true });
-
-  nextBtn?.addEventListener('click', () => centerItem(currentIndex + 1));
-  prevBtn?.addEventListener('click', () => centerItem(currentIndex - 1));
-  window.addEventListener('resize', () => centerItem(currentIndex, 'auto'));
-
-  centerItem(0, 'auto');
-};
-
-const setupCarousels = () => {
-  document.querySelectorAll('[data-projects-carousel]').forEach((root) => initCarousel(root));
-};
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', setupCarousels, { once: true });
-} else {
-  setupCarousels();
-}
-document.addEventListener('astro:after-swap', setupCarousels);
-</script>
+<script type="module" src={projectScriptUrl}></script>
