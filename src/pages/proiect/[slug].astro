@@ -5,11 +5,13 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 export async function getStaticPaths() {
-  const projects = await client.fetch(`*[_type == "project"]{ "slug": slug.current }`);
-  
-  return projects.map((project: any) => ({
+  const projects = await client.fetch(`*[_type == "project" && defined(slug.current)]{ "slug": slug.current }`);
+
+  return projects
+    .filter((project: any) => typeof project?.slug === 'string' && project.slug.trim().length > 0)
+    .map((project: any) => ({
     params: { slug: project.slug },
-  }));
+    }));
 }
 
 const { slug } = Astro.params;
