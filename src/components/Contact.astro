@@ -1,0 +1,123 @@
+﻿---
+import '@/styles/contact.css';
+import contactScriptUrl from '@/scripts/contact.ts?url';
+
+const company = {
+  name: 'Pixelflow Studio',
+  email: 'hello@pixelflow.studio',
+  phone: '+40 741 234 567',
+  address: 'Str. Pictor Verona 12, București',
+  schedule: 'Luni - Vineri, 09:00 - 18:00',
+  cui: 'RO48765432',
+};
+---
+
+<section id="contact" class="relative w-full overflow-hidden bg-linear-to-b from-[#030715] to-black py-24">
+  <div class="absolute -top-20 right-0 h-64 w-64 rounded-full bg-[#38bdf8]/10 blur-[95px] pointer-events-none"></div>
+  <div class="absolute bottom-0 left-0 h-72 w-72 rounded-full bg-[#a855f7]/10 blur-[95px] pointer-events-none"></div>
+
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
+    <div class="mb-12 flex flex-col items-center text-center space-y-4">
+      <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-widest text-zinc-400 backdrop-blur-sm">
+        <span class="h-2 w-2 rounded-full bg-[#38bdf8]"></span>
+        Contact
+      </span>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+        Hai să discutăm despre
+        <span class="text-transparent bg-clip-text bg-linear-to-r from-[#38bdf8] to-[#0052FF]"> următorul tău proiect.</span>
+      </h2>
+      <p class="max-w-2xl text-lg font-light text-[#94a3b8]">
+        Completează formularul, iar noi revenim cu un plan clar, estimare și pași concreți de implementare.
+      </p>
+    </div>
+
+    <div class="grid gap-6 lg:grid-cols-12">
+      <aside class="space-y-4 lg:col-span-5">
+        <article class="rounded-3xl border border-white/10 bg-[#0A0E17]/80 p-6 shadow-xl shadow-black/40">
+          <p class="text-[11px] uppercase tracking-[0.14em] text-zinc-500">Companie</p>
+          <h3 class="mt-2 text-2xl font-black text-white">{company.name}</h3>
+          <p class="mt-2 text-sm text-[#94a3b8]">Partener digital pentru website-uri rapide, scalabile și orientate spre conversie.</p>
+          <ul class="mt-4 space-y-2 text-xs text-zinc-300">
+            <li>Răspuns în mai puțin de 24h lucrătoare</li>
+            <li>Estimare inițială gratuită</li>
+            <li>NDA disponibil la cerere</li>
+          </ul>
+        </article>
+
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+          <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Email</p>
+            <a href={`mailto:${company.email}`} class="mt-1 block text-sm font-semibold text-[#bae6fd] hover:text-[#38bdf8] transition-colors">{company.email}</a>
+          </article>
+          <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Telefon</p>
+            <a href={`tel:${company.phone.replace(/\s+/g, '')}`} class="mt-1 block text-sm font-semibold text-white hover:text-[#38bdf8] transition-colors">{company.phone}</a>
+          </article>
+          <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Program</p>
+            <p class="mt-1 text-sm font-semibold text-white">{company.schedule}</p>
+          </article>
+          <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Sediu / CUI</p>
+            <p class="mt-1 text-sm font-semibold text-white">{company.address}</p>
+            <p class="mt-1 text-xs text-zinc-400">{company.cui}</p>
+          </article>
+        </div>
+      </aside>
+
+      <div class="lg:col-span-7">
+        <form data-contact-form class="rounded-3xl border border-white/10 bg-[#0A0E17]/80 p-6 md:p-8 shadow-2xl shadow-black/40 space-y-5" novalidate>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="contact-honeypot" aria-hidden="true" />
+          <input type="hidden" name="form_started_at" value="" data-form-started-at />
+
+          <div class="contact-grid">
+            <label class="contact-field" for="contact-name">
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Nume complet</span>
+              <input id="contact-name" class="contact-input" type="text" name="name" placeholder="Ex: Andrei Popescu" required aria-describedby="error-name" />
+              <span id="error-name" class="contact-error" data-contact-error-for="name"></span>
+            </label>
+            <label class="contact-field" for="contact-email">
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Email</span>
+              <input id="contact-email" class="contact-input" type="email" name="email" placeholder="nume@firma.ro" required aria-describedby="error-email" />
+              <span id="error-email" class="contact-error" data-contact-error-for="email"></span>
+            </label>
+          </div>
+
+          <div class="contact-grid">
+            <label class="contact-field" for="contact-company">
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Companie</span>
+              <input id="contact-company" class="contact-input" type="text" name="company" placeholder="Numele companiei" />
+              <span class="contact-error"></span>
+            </label>
+            <label class="contact-field" for="contact-budget">
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Buget estimat</span>
+              <select id="contact-budget" class="contact-input contact-select" name="budget">
+                <option value="">Alege interval</option>
+                <option value="1000-2500">1.000 - 2.500 EUR</option>
+                <option value="2500-5000">2.500 - 5.000 EUR</option>
+                <option value="5000-10000">5.000 - 10.000 EUR</option>
+                <option value="10000+">10.000+ EUR</option>
+              </select>
+              <span class="contact-error"></span>
+            </label>
+          </div>
+
+          <label class="contact-field block" for="contact-message">
+            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Mesaj</span>
+            <textarea id="contact-message" class="contact-input min-h-32 resize-y" name="message" placeholder="Spune-ne pe scurt ce vrei să construim..." required aria-describedby="error-message"></textarea>
+            <span id="error-message" class="contact-error" data-contact-error-for="message"></span>
+          </label>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <p data-contact-status class="text-sm text-zinc-400">Răspundem de obicei în aceeași zi lucrătoare.</p>
+            <button type="submit" data-contact-submit class="inline-flex h-11 items-center justify-center rounded-xl bg-[#0052FF] px-6 text-xs font-bold uppercase tracking-[0.14em] text-white transition-all hover:bg-[#1d4ed8] disabled:cursor-not-allowed disabled:opacity-60">
+              Trimite mesaj
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script type="module" src={contactScriptUrl}></script>
