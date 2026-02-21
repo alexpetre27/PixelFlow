@@ -1,17 +1,20 @@
 ---
 import Navbar from '@/components/Navbar.astro';
+import Footer from '@/components/Footer.astro';
 import '../styles/global.css';
-import Projects from '@/components/Projects.astro';
+
+const { title = 'Pixelflow Studio' } = Astro.props as { title?: string };
 ---
 <!doctype html>
 <html lang="ro">
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
-		<title>Pixelflow Studio</title>
+		<title>{title}</title>
 	</head>
 	<body class="bg-black">
 <Navbar />
 	<slot />
+  <Footer />
   </body>
 </html>

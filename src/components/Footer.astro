@@ -1,0 +1,84 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="relative w-full overflow-hidden bg-linear-to-b from-black to-[#030715]">
+  <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-white/20 to-transparent"></div>
+
+  <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:py-14">
+    <div class="grid gap-8 md:grid-cols-12 md:items-start">
+      <div class="md:col-span-5">
+        <a href="#home" class="inline-flex items-center gap-3">
+          <span class="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-xs font-black italic text-black">PF</span>
+          <span class="text-sm font-black tracking-[0.16em] text-white">PIXELFLOW STUDIO</span>
+        </a>
+        <p class="mt-4 max-w-md text-sm leading-relaxed text-[#94a3b8]">
+          Construim produse digitale rapide, curate si scalabile, cu focus pe conversii si experienta utilizatorului.
+        </p>
+      </div>
+
+      <div class="md:col-span-3">
+        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">Navigare</p>
+        <div class="mt-4 flex flex-col gap-2 text-sm">
+          <a href="/#home" class="text-zinc-300 transition-colors hover:text-white">Acasă</a>
+          <a href="/#services" class="text-zinc-300 transition-colors hover:text-white">Servicii</a>
+          <a href="/#work" class="text-zinc-300 transition-colors hover:text-white">Proiecte</a>
+          <a href="/#testimonials" class="text-zinc-300 transition-colors hover:text-white">Testimoniale</a>
+          <a href="/#contact" class="text-zinc-300 transition-colors hover:text-white">Contact</a>
+        </div>
+      </div>
+
+      <div class="md:col-span-4">
+        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">Date Firma</p>
+        <div class="mt-4 space-y-2 text-sm text-zinc-300">
+          <p>Pixelflow Studio SRL</p>
+          <p>CUI RO48765432</p>
+          <a href="mailto:hello@pixelflow.studio" class="block transition-colors hover:text-white">hello@pixelflow.studio</a>
+          <a href="tel:+40741234567" class="block transition-colors hover:text-white">+40 741 234 567</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4 md:grid-cols-12 md:items-center">
+      <div class="md:col-span-6">
+        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">Conformitate Consumatori</p>
+        <p class="mt-2 text-xs leading-relaxed text-zinc-400">
+          Afișare pictograme ANPC conform cerințelor pentru comercianți online (SAL/SOL).
+        </p>
+      </div>
+      <div class="flex flex-col gap-2 sm:flex-row sm:items-center md:col-span-6 md:justify-end">
+        <a
+          href="https://anpc.ro/sal/"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex overflow-hidden rounded-xl border border-white/15 hover:border-white/30 transition-colors"
+          aria-label="Soluționarea Alternativă a Litigiilor - ANPC"
+        >
+          <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="ANPC SAL" class="h-[42px] w-[210px] object-cover" loading="lazy" />
+        </a>
+        <a
+          href="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="inline-flex overflow-hidden rounded-xl border border-white/15 hover:border-white/30 transition-colors"
+          aria-label="Soluționarea Online a Litigiilor"
+        >
+          <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="ANPC SOL" class="h-[42px] w-[210px] object-cover" loading="lazy" />
+        </a>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-400">
+      <a href="/termeni-si-conditii" class="hover:text-white transition-colors">Termeni și Condiții</a>
+      <a href="/politica-de-confidentialitate" class="hover:text-white transition-colors">Politica de Confidențialitate</a>
+      <a href="/politica-de-cookies" class="hover:text-white transition-colors">Politica de Cookies</a>
+    </div>
+
+    <div class="h-px w-full bg-white/10"></div>
+
+    <div class="flex flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
+      <p>© {currentYear} Pixelflow Studio. Toate drepturile rezervate.</p>
+      <p>Design si dezvoltare in-house.</p>
+    </div>
+  </div>
+</footer>
