@@ -1,4 +1,4 @@
----
+﻿---
 import { Button } from "@/components/ui/button";
 import { Image } from "astro:assets";
 import { MoveRight, ExternalLink } from "lucide-react";
@@ -13,140 +13,128 @@ const avatars = [
 ];
 ---
 
-<section class="relative min-h-screen flex items-center justify-center overflow-hidden bg-linear-to-b from-[#02040f] to-[#030715] pt-32 pb-16 lg:py-0 font-sans" id="home">
-
-  <div class="container mx-auto px-6 lg:px-10 relative z-10 max-w-350">
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-8 items-center">
-      
-      <div class="lg:col-span-5 space-y-8 lg:space-y-10 z-20">
+<section class="relative min-h-screen overflow-hidden bg-linear-to-b from-[#02040f] to-[#030715] pt-36 pb-12 md:pt-40 md:pb-16 lg:pt-44 lg:pb-20" id="home">
+  <div class="container relative z-10 mx-auto max-w-7xl px-6 lg:px-10">
+    <div class="grid grid-cols-1 items-center gap-12 lg:grid-cols-12 lg:gap-8">
+      <div class="z-20 space-y-8 lg:col-span-5 lg:space-y-10">
         <div>
-          <span class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full text-[12px] font-semibold tracking-wide bg-[#0A1122] border border-blue-500/20 text-[#94a3b8]">
-            <span class="text-[#38bdf8] text-lg leading-none font-normal" aria-hidden="true">+</span> Web Development de Performanță
+          <span class="inline-flex items-center gap-2 rounded-full border border-blue-500/20 bg-[#0A1122] px-3.5 py-1.5 text-[12px] font-semibold tracking-wide text-[#94a3b8]">
+            <span class="text-lg font-normal leading-none text-[#38bdf8]" aria-hidden="true">+</span> Web Development de Performanță
           </span>
         </div>
-        
+
         <div class="space-y-4 lg:space-y-6">
-          <h1 class="text-[40px] sm:text-[56px] lg:text-[84px] font-extrabold tracking-tighter leading-[1.05] lg:leading-[1.02] text-white">
+          <h1 class="text-[38px] font-extrabold leading-[1.05] tracking-tighter text-white sm:text-[54px] lg:text-[84px] lg:leading-[1.02]">
             Transformăm <br class="hidden sm:block" />
             viziunea în <span class="text-[#38bdf8]">profit.</span>
           </h1>
-          
-          <p class="text-[#94a3b8] text-base sm:text-lg lg:text-[20px] max-w-130 leading-[1.6] font-light">
-            Nu vindem doar site-uri, livrăm <span class="text-white font-semibold">performanță măsurabilă</span>. Arhitecturi moderne ce transformă prima impresie într-o <span class="text-[#38bdf8] font-semibold">relație pe termen lung</span>.
+
+          <p class="max-w-2xl text-base leading-[1.6] font-light text-[#94a3b8] sm:text-lg lg:text-[20px]">
+            Nu vindem doar site-uri, livrăm <span class="font-semibold text-white">performanță măsurabilă</span>. Arhitecturi moderne ce transformă prima impresie într-o <span class="font-semibold text-[#38bdf8]">relație pe termen lung</span>.
           </p>
         </div>
 
-        <div class="flex flex-col sm:flex-row gap-4 sm:gap-5 pt-4">
-          <Button 
-            className="w-full sm:w-auto relative h-14 px-8 rounded-xl bg-[#0052FF] hover:bg-[#0047E1] text-white font-bold text-lg shadow-[0_0_30px_-5px_rgba(0,82,255,0.5)] transition-all hover:shadow-[0_0_50px_-5px_rgba(0,82,255,0.8)] hover:scale-[1.02] active:scale-[0.98] group overflow-hidden"
-          >
-            <span class="absolute inset-0 w-full h-full bg-linear-to-r from-transparent via-white/10 to-transparent -translate-x-full group-hover:animate-shimmer" aria-hidden="true"></span>
-            <span class="relative flex items-center justify-center gap-2">
-              Începe un proiect 
-              <MoveRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true" />
-            </span>
-          </Button>
+        <div class="flex flex-col gap-4 pt-2 sm:flex-row sm:gap-5">
+          <a href="/#contact" class="w-full sm:w-auto">
+            <Button className="group relative h-14 w-full overflow-hidden rounded-xl bg-[#0052FF] px-8 text-lg font-bold text-white shadow-[0_0_30px_-5px_rgba(0,82,255,0.5)] transition-all hover:scale-[1.02] hover:bg-[#0047E1] hover:shadow-[0_0_50px_-5px_rgba(0,82,255,0.8)] active:scale-[0.98] sm:w-auto">
+              <span class="absolute inset-0 h-full w-full -translate-x-full bg-linear-to-r from-transparent via-white/10 to-transparent group-hover:animate-shimmer" aria-hidden="true"></span>
+              <span class="relative flex items-center justify-center gap-2">
+                Începe un proiect
+                <MoveRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" aria-hidden="true" />
+              </span>
+            </Button>
+          </a>
 
-          <Button 
-            variant="outline" 
-            className="w-full sm:w-auto h-14 px-8 rounded-xl border-white/10 bg-white/5 text-white font-bold text-lg backdrop-blur-sm hover:bg-white/10 hover:border-white/20 hover:scale-[1.02] active:scale-[0.98] group"
-          >
-            <span class="flex items-center justify-center gap-2">
-              Portofoliu
-              <ExternalLink className="w-4 h-4 opacity-50 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" aria-hidden="true" />
-            </span>
-          </Button>
+          <a href="/#work" class="w-full sm:w-auto">
+            <Button variant="outline" className="group h-14 w-full rounded-xl border-white/10 bg-white/5 px-8 text-lg font-bold text-white backdrop-blur-sm transition-all hover:scale-[1.02] hover:border-white/20 hover:bg-white/10 active:scale-[0.98] sm:w-auto">
+              <span class="flex items-center justify-center gap-2">
+                Portofoliu
+                <ExternalLink className="h-4 w-4 opacity-50 transition-all duration-300 group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:opacity-100" aria-hidden="true" />
+              </span>
+            </Button>
+          </a>
         </div>
 
-        <div class="flex items-center gap-4 pt-4 lg:pt-6">
-        <div class="flex -space-x-3">
-  {avatars.map((src, index) => (
-    <Image 
-      src={src} 
-      alt={`Client avatar ${index + 1}`}
-      width={36} 
-      height={36}
-      class="w-9 h-9 rounded-full border-[3px] border-[#030710] object-cover" 
-      loading="lazy" 
-      decoding="async" 
-    />
-  ))}
-</div>
+        <div class="flex items-center gap-4 pt-3 lg:pt-6">
+          <div class="flex -space-x-3">
+            {avatars.map((src, index) => (
+              <Image
+                src={src}
+                alt={`Client avatar ${index + 1}`}
+                width={36}
+                height={36}
+                class="h-9 w-9 rounded-full border-[3px] border-[#030710] object-cover"
+                loading="lazy"
+                decoding="async"
+              />
+            ))}
+          </div>
           <div class="flex flex-col justify-center space-y-0.5">
             <div class="flex gap-px text-[#F59E0B]" aria-label="5 din 5 stele">
               {Array.from({ length: 5 }).map(() => (
-                <svg aria-hidden="true" class="w-3.5 h-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+                <svg aria-hidden="true" class="h-3.5 w-3.5 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
               ))}
             </div>
-            <p class="text-[13px] text-[#94a3b8] font-medium tracking-wide">Peste <span class="text-white font-bold">50+ proiecte</span> livrate</p>
+            <p class="text-[13px] font-medium tracking-wide text-[#94a3b8]">Peste <span class="font-bold text-white">50+ proiecte</span> livrate</p>
           </div>
         </div>
       </div>
 
-    <div class="lg:col-span-7 relative group mt-8 mb-20 lg:mb-0 lg:mt-0 lg:ml-10 text-left lg:perspective-distant">
-        <div class="relative transition-all duration-700 ease-out lg:transform-3d lg:transform-[rotateY(20deg)_rotateX(6deg)_rotateZ(-1deg)] lg:group-hover:transform-[rotateY(16deg)_rotateX(4deg)_scale(1.02)]">   
-          <div class="absolute -inset-4 bg-[#38bdf8]/15 blur-[50px] -z-20 rounded-3xl lg:transform-[translateZ(-30px)]" aria-hidden="true"></div>
-          <div class="absolute -inset-px bg-blue-600/60 rounded-2xl blur-md -z-10 lg:transform-[translateZ(-1px)] hidden lg:block" aria-hidden="true"></div>
+      <div class="group relative mt-6 mb-10 text-left lg:col-span-7 lg:mt-0 lg:mb-0 lg:ml-10 lg:perspective-distant">
+        <div class="relative transition-all duration-700 ease-out lg:transform-3d lg:transform-[rotateY(20deg)_rotateX(6deg)_rotateZ(-1deg)] lg:group-hover:transform-[rotateY(16deg)_rotateX(4deg)_scale(1.02)]">
+          <div class="absolute -inset-4 -z-20 rounded-3xl bg-[#38bdf8]/15 blur-[50px] lg:transform-[translateZ(-30px)]" aria-hidden="true"></div>
+          <div class="absolute -inset-px -z-10 hidden rounded-2xl bg-blue-600/60 blur-md lg:block lg:transform-[translateZ(-1px)]" aria-hidden="true"></div>
 
-          <div class="relative z-20 rounded-[14px] overflow-hidden border border-[#1e3a8a]/50 bg-[#0A0E17] ring-1 ring-white/5 shadow-2xl">
-            <div class="h-9 bg-[#0F1523] border-b border-white/5 flex items-center px-4" aria-hidden="true">
+          <div class="relative z-20 overflow-hidden rounded-[14px] border border-[#1e3a8a]/50 bg-[#0A0E17] shadow-2xl ring-1 ring-white/5">
+            <div class="flex h-9 items-center border-b border-white/5 bg-[#0F1523] px-4" aria-hidden="true">
               <div class="flex gap-2.5">
-                <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F57] opacity-90"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E] opacity-90"></div>
-                <div class="w-2.5 h-2.5 rounded-full bg-[#28C940] opacity-90"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-[#FF5F57] opacity-90"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-[#FFBD2E] opacity-90"></div>
+                <div class="h-2.5 w-2.5 rounded-full bg-[#28C940] opacity-90"></div>
               </div>
             </div>
-         <div class="relative aspect-video w-full bg-[#0A0E17]">
-  <Image 
-    src={dashboardImage} 
-    alt="Prezentare interfață dashboard proiect" 
-    width={1200} 
-    height={675}
-    class="w-full h-full object-cover" 
-    loading="eager"
-    fetchpriority="high"
-    decoding="async"
-  />
-</div>
+            <div class="relative aspect-video w-full bg-[#0A0E17]">
+              <Image
+                src={dashboardImage}
+                alt="Prezentare interfață dashboard proiect"
+                width={1200}
+                height={675}
+                class="h-full w-full object-cover"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async"
+              />
+            </div>
           </div>
 
-          <div class="absolute -bottom-4 -left-2 sm:bottom-6 sm:left-6 z-30 bg-[#0F1523]/95 backdrop-blur-sm border border-blue-500/30 rounded-2xl p-3 flex items-center gap-3 shadow-xl shadow-black/50 lg:transform-[translateZ(30px)] lg:group-hover:transform-[translateZ(40px)] transition-transform duration-700">
-            <div class="w-10 h-10 rounded-xl bg-blue-600/20 flex items-center justify-center border border-blue-500/30" aria-hidden="true">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 text-blue-500">
+          <div class="relative z-30 mt-4 inline-flex items-center gap-3 rounded-2xl border border-blue-500/30 bg-[#0F1523]/95 p-3 shadow-xl shadow-black/50 sm:absolute sm:-bottom-4 sm:left-6 sm:mt-0 lg:transform-[translateZ(30px)] lg:transition-transform lg:duration-700 lg:group-hover:transform-[translateZ(40px)]">
+            <div class="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-500/30 bg-blue-600/20" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5 text-blue-500">
                 <path fill-rule="evenodd" d="M15.22 6.268a.75.75 0 01.968-.432l5.942 2.28a.75.75 0 01.431.97l-2.28 5.941a.75.75 0 11-1.44-.412l1.552-4.046-6.676 6.676a.75.75 0 01-1.06 0l-3.636-3.636-5.653 5.654a.75.75 0 01-1.06-1.06l6.183-6.184a.75.75 0 011.06 0l3.636 3.636 5.09-5.09-4.046 1.552a.75.75 0 01-.97-.431z" clip-rule="evenodd" />
               </svg>
             </div>
             <div>
-              <p class="text-[10px] text-zinc-400 font-bold uppercase tracking-wider leading-none mb-1 text-left">Growth</p>
-              <p class="text-lg text-white font-bold leading-none">+28.4%</p>
+              <p class="mb-1 text-left text-[10px] leading-none font-bold tracking-wider text-zinc-400 uppercase">Growth</p>
+              <p class="text-lg leading-none font-bold text-white">+28.4%</p>
             </div>
           </div>
 
-          <div class="hidden lg:block absolute top-[calc(100%-1px)] left-0 w-full h-full origin-top scale-y-[-1] pointer-events-none z-10 opacity-60" style="-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%);">
-            <div class="rounded-[14px] overflow-hidden border border-[#1e3a8a]/20 bg-[#0A0E17] blur-[1px] ring-1 ring-white/5">
-              <div class="h-9 bg-[#0F1523] border-b border-white/5 flex items-center px-4" aria-hidden="true">
+          <div class="pointer-events-none absolute top-[calc(100%-1px)] left-0 z-10 hidden h-full w-full origin-top scale-y-[-1] opacity-60 lg:block" style="-webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%); mask-image: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 40%);">
+            <div class="overflow-hidden rounded-[14px] border border-[#1e3a8a]/20 bg-[#0A0E17] blur-[1px] ring-1 ring-white/5">
+              <div class="flex h-9 items-center border-b border-white/5 bg-[#0F1523] px-4" aria-hidden="true">
                 <div class="flex gap-2.5 opacity-40">
-                  <div class="w-2.5 h-2.5 rounded-full bg-[#FF5F57]"></div>
-                  <div class="w-2.5 h-2.5 rounded-full bg-[#FFBD2E]"></div>
-                  <div class="w-2.5 h-2.5 rounded-full bg-[#28C940]"></div>
+                  <div class="h-2.5 w-2.5 rounded-full bg-[#FF5F57]"></div>
+                  <div class="h-2.5 w-2.5 rounded-full bg-[#FFBD2E]"></div>
+                  <div class="h-2.5 w-2.5 rounded-full bg-[#28C940]"></div>
                 </div>
               </div>
               <div class="relative aspect-video w-full bg-[#0A0E17]">
-                <img 
-                  src={dashboardImage} 
-                  alt="" 
-                  aria-hidden="true"
-                  class="w-full h-full object-cover" 
-                  loading="lazy" 
-                  decoding="async" 
-                />
+                <img src={dashboardImage} alt="" aria-hidden="true" class="h-full w-full object-cover" loading="lazy" decoding="async" />
               </div>
             </div>
           </div>
-
         </div>
       </div>
-
     </div>
   </div>
 </section>

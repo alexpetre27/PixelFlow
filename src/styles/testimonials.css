@@ -10,6 +10,9 @@
 [data-testimonials-track] {
   scroll-padding-inline: 0.5rem;
   transition: opacity 180ms cubic-bezier(0.22, 1, 0.36, 1);
+  touch-action: pan-x;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior-x: contain;
 }
 
 [data-testimonials-carousel].is-wrapping [data-testimonials-track] {

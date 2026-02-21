@@ -12,11 +12,11 @@ const navItems = [
 
 <nav
   id="main-nav"
-  class="fixed top-8 left-0 right-0 z-100 flex justify-center px-6 transition-all duration-500 ease-out"
+  class="fixed top-8 left-0 right-0 z-100 flex justify-center px-3 sm:px-6 transition-all duration-500 ease-out"
 >
   <div
     id="nav-container"
-    class="w-full max-w-6xl h-14 bg-zinc-950/40 backdrop-blur-2xl border border-white/10 rounded-full flex items-center justify-between pl-2 pr-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] transition-all duration-500 ease-in-out relative z-110"
+    class="relative z-110 flex h-13 w-full max-w-6xl items-center justify-between rounded-full border border-white/10 bg-zinc-950/40 pl-2 pr-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-2xl transition-all duration-500 ease-in-out sm:h-14"
   >
     <a href="/#home" class="flex items-center gap-3 pl-4 shrink-0">
       <div class="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black italic text-[12px]">
@@ -60,7 +60,7 @@ const navItems = [
 
     <div
       id="mobile-menu"
-      class="absolute top-[calc(100%+1rem)] left-0 right-0 bg-zinc-900/95 backdrop-blur-3xl border border-white/10 rounded-4xl p-8 md:hidden opacity-0 -translate-y-5 pointer-events-none transition-all duration-500 z-100 shadow-2xl shadow-black"
+      class="absolute top-[calc(100%+1rem)] left-0 right-0 z-100 -translate-y-5 rounded-4xl border border-white/10 bg-zinc-900/95 p-6 opacity-0 shadow-2xl shadow-black backdrop-blur-3xl pointer-events-none transition-all duration-500 md:hidden sm:p-8"
     >
       <nav class="flex flex-col gap-6">
         {navItems.map((item) => (
@@ -81,6 +81,7 @@ const navItems = [
     Contact <ArrowUpRight className="ml-2 w-4 h-4 text-zinc-400" />
   </Button>
 </a>
+      </nav>
     </div>
   </div>
 </nav>
