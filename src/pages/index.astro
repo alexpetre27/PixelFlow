@@ -4,6 +4,7 @@ import { client } from '../lib/sanity';
 import Hero from '@/components/Hero.astro';
 import Services from '@/components/Services.astro';
 import Projects from '@/components/Projects.astro';
+import Testimonials from '@/components/Testimonials.astro';
 
 const projects = await client.fetch(`*[_type == "project"] | order(_createdAt desc) {
   title,
@@ -19,5 +20,6 @@ const projects = await client.fetch(`*[_type == "project"] | order(_createdAt de
   <Services />
   <main>
     <Projects projects={projects} pinnedProjectTitle="MicroManager" />
+    <Testimonials />
   </main>
 </Layout>

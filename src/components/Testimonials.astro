@@ -1,0 +1,79 @@
+﻿---
+interface Testimonial {
+  name: string;
+  role: string;
+  company: string;
+  quote: string;
+  rating: number;
+}
+
+const testimonials: Testimonial[] = [
+  {
+    name: "Andrei Popescu",
+    role: "Founder",
+    company: "NextHome",
+    quote: "Colaborarea a fost impecabila. Noul site ne-a crescut rata de conversie in primele 30 de zile.",
+    rating: 5,
+  },
+  {
+    name: "Mara Ionescu",
+    role: "Marketing Lead",
+    company: "Urban Balance",
+    quote: "Echipa livreaza rapid si curat. Designul e premium, iar performanta tehnica e exact ce aveam nevoie.",
+    rating: 5,
+  },
+  {
+    name: "Vlad Stan",
+    role: "CEO",
+    company: "Clinica Axis",
+    quote: "Am trecut de la un site lent la o platforma care inspira incredere si ne aduce lead-uri constante.",
+    rating: 5,
+  },
+];
+---
+
+<section id="testimonials" class="relative w-full overflow-hidden bg-linear-to-b from-black to-[#030715] py-24">
+
+  <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
+    <div class="mb-14 flex flex-col items-center text-center space-y-4">
+      <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-widest text-zinc-400 backdrop-blur-sm">
+        <span class="h-2 w-2 rounded-full bg-[#38bdf8]"></span>
+        Testimoniale
+      </span>
+      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
+        Ce spun clientii despre
+        <span class="text-transparent bg-clip-text bg-linear-to-r from-[#38bdf8] to-[#0052FF]"> colaborarea cu noi.</span>
+      </h2>
+      <p class="max-w-2xl text-lg font-light text-[#94a3b8]">
+        Rezultate concrete, feedback real, relatii pe termen lung.
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
+      {testimonials.map((item) => (
+        <article class="group relative rounded-4xl border border-white/10 bg-[#0A0E17]/80 p-7 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:bg-[#0F1523] hover:border-[#38bdf8]/35 shadow-xl shadow-black/40">
+          <div class="absolute inset-0 rounded-4xl bg-linear-to-br from-[#38bdf8]/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none"></div>
+
+          <div class="relative z-10">
+            <div class="mb-5 flex items-center gap-1 text-amber-400" aria-label={`${item.rating} stele din 5`}>
+              {Array.from({ length: item.rating }).map(() => (
+                <svg aria-hidden="true" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z"></path></svg>
+              ))}
+            </div>
+
+            <blockquote class="text-sm leading-relaxed text-[#c3d2ea]">
+              "{item.quote}"
+            </blockquote>
+
+            <footer class="mt-6 border-t border-white/10 pt-4">
+              <p class="text-white font-bold tracking-tight">{item.name}</p>
+              <p class="text-xs uppercase tracking-[0.12em] text-zinc-400">
+                {item.role} - {item.company}
+              </p>
+            </footer>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>
