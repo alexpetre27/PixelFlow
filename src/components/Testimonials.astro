@@ -1,39 +1,11 @@
 ﻿---
-interface Testimonial {
-  name: string;
-  role: string;
-  company: string;
-  quote: string;
-  rating: number;
-}
+import '@/styles/testimonials.css';
+import testimonialsScriptUrl from '@/scripts/testimonials.ts?url';
 
-const testimonials: Testimonial[] = [
-  {
-    name: "Andrei Popescu",
-    role: "Founder",
-    company: "NextHome",
-    quote: "Colaborarea a fost impecabila. Noul site ne-a crescut rata de conversie in primele 30 de zile.",
-    rating: 5,
-  },
-  {
-    name: "Mara Ionescu",
-    role: "Marketing Lead",
-    company: "Urban Balance",
-    quote: "Echipa livreaza rapid si curat. Designul e premium, iar performanta tehnica e exact ce aveam nevoie.",
-    rating: 5,
-  },
-  {
-    name: "Vlad Stan",
-    role: "CEO",
-    company: "Clinica Axis",
-    quote: "Am trecut de la un site lent la o platforma care inspira incredere si ne aduce lead-uri constante.",
-    rating: 5,
-  },
-];
+import { testimonials } from '@/data/testimonials';
 ---
 
-<section id="testimonials" class="relative w-full overflow-hidden bg-linear-to-b from-black to-[#030715] py-24">
-
+<section id="testimonials" class="relative w-full overflow-visible bg-linear-to-b from-black to-[#030715] py-24">
   <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
     <div class="mb-14 flex flex-col items-center text-center space-y-4">
       <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-widest text-zinc-400 backdrop-blur-sm">
@@ -49,31 +21,70 @@ const testimonials: Testimonial[] = [
       </p>
     </div>
 
-    <div class="grid grid-cols-1 gap-6 md:grid-cols-2 xl:grid-cols-3">
-      {testimonials.map((item) => (
-        <article class="group relative rounded-4xl border border-white/10 bg-[#0A0E17]/80 p-7 backdrop-blur-sm transition-all duration-500 hover:-translate-y-1 hover:bg-[#0F1523] hover:border-[#38bdf8]/35 shadow-xl shadow-black/40">
-          <div class="absolute inset-0 rounded-4xl bg-linear-to-br from-[#38bdf8]/10 via-transparent to-transparent opacity-0 transition-opacity duration-500 group-hover:opacity-100 pointer-events-none"></div>
+    <div data-testimonials-carousel class="relative mt-12 md:mt-14">
+      <button
+        type="button"
+        data-testimonials-prev
+        aria-label="Testimonial anterior"
+        class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur-sm transition-all hover:border-[#38bdf8]/40 hover:text-[#38bdf8]"
+      >
+        ‹
+      </button>
+      <button
+        type="button"
+        data-testimonials-next
+        aria-label="Urmatorul testimonial"
+        class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur-sm transition-all hover:border-[#38bdf8]/40 hover:text-[#38bdf8]"
+      >
+        ›
+      </button>
 
-          <div class="relative z-10">
-            <div class="mb-5 flex items-center gap-1 text-amber-400" aria-label={`${item.rating} stele din 5`}>
-              {Array.from({ length: item.rating }).map(() => (
-                <svg aria-hidden="true" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z"></path></svg>
-              ))}
+      <div data-testimonials-track class="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar px-1 py-2 md:px-8">
+        {testimonials.map((item, index) => (
+          <article
+            data-testimonial-item
+            data-index={index}
+            class="testimonial-card group min-w-[92%] sm:min-w-[72%] md:min-w-[52%] lg:min-w-[38%] xl:min-w-[34%] snap-center relative rounded-4xl border border-white/10 bg-[#0A0E17]/80 p-7 backdrop-blur-sm hover:-translate-y-0.5 hover:bg-[#0F1523] hover:border-[#38bdf8]/35 shadow-xl shadow-black/40"
+          >
+            <div class="absolute inset-0 rounded-4xl bg-linear-to-br from-[#38bdf8]/10 via-transparent to-transparent opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 pointer-events-none"></div>
+
+            <div class="relative z-10">
+              <div class="mb-5 flex items-center gap-1 text-amber-400" aria-label={`${item.rating} stele din 5`}>
+                {Array.from({ length: item.rating }).map(() => (
+                  <svg aria-hidden="true" class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z"></path></svg>
+                ))}
+              </div>
+
+              <blockquote class="text-sm leading-relaxed text-[#c3d2ea]">
+                "{item.quote}"
+              </blockquote>
+
+              <footer class="mt-6 border-t border-white/10 pt-4">
+                <p class="text-white font-bold tracking-tight">{item.name}</p>
+                <p class="text-xs uppercase tracking-[0.12em] text-zinc-400">
+                  {item.role} - {item.company}
+                </p>
+              </footer>
             </div>
+          </article>
+        ))}
+      </div>
 
-            <blockquote class="text-sm leading-relaxed text-[#c3d2ea]">
-              "{item.quote}"
-            </blockquote>
-
-            <footer class="mt-6 border-t border-white/10 pt-4">
-              <p class="text-white font-bold tracking-tight">{item.name}</p>
-              <p class="text-xs uppercase tracking-[0.12em] text-zinc-400">
-                {item.role} - {item.company}
-              </p>
-            </footer>
-          </div>
-        </article>
-      ))}
+      <div data-testimonials-dots class="mt-5 flex items-center justify-center gap-2">
+        {testimonials.map((_, index) => (
+          <button
+            type="button"
+            data-testimonials-dot
+            data-index={index}
+            aria-label={`Mergi la testimonialul ${index + 1}`}
+            class="rounded-full hover:bg-[#38bdf8]"
+          ></button>
+        ))}
+      </div>
     </div>
   </div>
 </section>
+
+<script type="module" src={testimonialsScriptUrl}></script>
+
+
