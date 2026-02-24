@@ -6,10 +6,10 @@ import { ui } from '@/i18n/ui';
 interface Project {
   title: string;
   category?: string;
-  description?: string;
-  image?: string;
+  description?: any;
+  image?: any;
   imageUrl?: string;
-  slug?: string;
+  slug?: any;
   link?: string;
   github?: string;
 }
@@ -20,34 +20,18 @@ const { lang = 'ro', projects = [], pinnedProjectTitle = 'MicroManager' } = Astr
   pinnedProjectTitle?: string;
 };
 
-const t = ui[lang];
-const normalizedPinnedTitle = pinnedProjectTitle.trim().toLowerCase();
+const t = ui[lang as keyof typeof ui] || ui['ro'];
 
-const orderedProjects = [...projects].sort((a, b) => {
-  const aPinned = a.title.trim().toLowerCase() === normalizedPinnedTitle ? 1 : 0;
-  const bPinned = b.title.trim().toLowerCase() === normalizedPinnedTitle ? 1 : 0;
-  return bPinned - aPinned;
+const orderedProjects = [...(projects || [])].sort((a, b) => {
+  const titleA = (a.title || "").toLowerCase();
+  const titleB = (b.title || "").toLowerCase();
+  const pinned = pinnedProjectTitle.toLowerCase();
+  if (titleA === pinned) return -1;
+  if (titleB === pinned) return 1;
+  return 0;
 });
 
-const getImageUrl = (project: Project) => {
-  if (project.imageUrl) return project.imageUrl;
-  if (project.image) return project.image;
-  if (project.link) return `https://image.thum.io/get/width/1400/crop/950/no_cookie/${project.link}`;
-  return null;
-};
-
-const getPrimaryLink = (project: Project) => {
-  if (project.link) return project.link;
-  if (project.github) return project.github;
-  if (project.slug) return `/proiect/${project.slug}`;
-  return null;
-};
-
-const isExternal = (url: string | null) => Boolean(url && /^https?:\/\//.test(url));
-
-const categories = Array.from(
-  new Set(orderedProjects.map((project) => (project.category || 'General').trim()))
-).sort((a, b) => a.localeCompare(b, lang));
+const categories = Array.from(new Set(orderedProjects.map(p => (p.category || 'General').trim()))).sort();
 ---
 
 <section id="work" data-projects-editorial class="relative w-full overflow-hidden bg-[#03060d] py-24">
@@ -60,116 +44,122 @@ const categories = Array.from(
         </span>
         <h2 class="mt-4 max-w-3xl text-4xl font-extrabold tracking-tight text-white md:text-6xl">
           {t['work.title.1']}
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-100 to-amber-300/80">{t['work.title.2']}</span>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-100 to-amber-300/80"> {t['work.title.2']}</span>
         </h2>
       </div>
-
-      <div class="hidden w-fit self-end rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right backdrop-blur-sm md:block lg:self-auto">
-        <p class="text-[10px] font-bold uppercase tracking-[0.14em] text-zinc-500">{t['work.total']}</p>
+      <div class="hidden md:block text-right border border-white/10 bg-white/5 px-4 py-3 rounded-2xl backdrop-blur-sm">
+        <p class="text-[10px] font-bold uppercase text-zinc-500">{t['work.total']}</p>
         <p class="text-3xl font-black text-white">{orderedProjects.length}</p>
       </div>
     </header>
 
-    <div class="rounded-4xl border border-white/10 bg-white/[0.02] p-5 shadow-2xl shadow-black/40 backdrop-blur-sm md:p-7">
-      <div class="mb-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
-        <input
-          type="text"
-          data-project-search
-          placeholder={t['work.search']}
-          class="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white placeholder:text-zinc-500 outline-none transition-all focus:border-amber-200/40 focus:bg-white/[0.07]"
-        />
-
-        <div class="flex h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 text-[11px] uppercase tracking-[0.14em] text-zinc-300">
+    <div class="rounded-4xl border border-white/10 bg-[#0A0E17]/75 p-5 shadow-2xl backdrop-blur-sm md:p-7">
+      <div class="mb-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto]">
+        <input type="text" data-project-search placeholder={t['work.search']} class="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white outline-none focus:border-amber-200/40 focus:bg-white/[0.07]" />
+        <div class="flex h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 text-[11px] uppercase text-zinc-300 tracking-widest font-bold">
           <span>{t['work.results']}</span>
           <span data-results-count class="font-bold text-amber-200">{orderedProjects.length}</span>
         </div>
       </div>
 
       <div class="mb-7 flex gap-2 overflow-x-auto no-scrollbar pb-1">
-        <button type="button" data-category-filter="all" class="category-chip is-active shrink-0 h-9 rounded-full border border-amber-200/35 bg-amber-200/15 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-100">
-          {t['work.filter.all']}
-        </button>
-        {categories.map((category) => (
-          <button type="button" data-category-filter={category} class="category-chip shrink-0 h-9 rounded-full border border-white/10 bg-white/5 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-amber-200/35 hover:text-amber-100">
-            {category}
-          </button>
+        <button type="button" data-category-filter="all" class="category-chip is-active h-9 rounded-full border border-amber-200/35 bg-amber-200/15 px-4 text-[10px] font-bold uppercase text-amber-100 transition-all">{t['work.filter.all']}</button>
+        {categories.map((cat) => (
+          <button type="button" data-category-filter={cat} class="category-chip h-9 rounded-full border border-white/10 bg-white/5 px-4 text-[10px] font-bold uppercase text-zinc-300 hover:border-amber-200/35 hover:text-amber-100 transition-all">{cat}</button>
         ))}
       </div>
 
       <div data-project-list class="space-y-5">
         {orderedProjects.map((project, index) => {
-          const href = getPrimaryLink(project);
-          const external = isExternal(href);
-          const image = getImageUrl(project);
+          const displayImage = project.imageUrl || (project.link && project.link !== "#" ? `https://image.thum.io/get/width/1200/crop/800/no_cookie/${project.link}` : null);
+          const link = project.link || project.github || (project.slug?.current ? `/proiect/${project.slug.current}` : "#");
+          const title = project.title || "Project";
           const category = (project.category || 'General').trim();
           const isReverse = index % 2 !== 0;
+          
+          let description = "";
+          if (typeof project.description === 'string') {
+            description = project.description;
+          } else if (Array.isArray(project.description)) {
+            description = project.description.map((b: any) => b.children?.map((c: any) => c.text).join('')).join(' ');
+          }
 
           return (
-            <article
-              data-project-item
-              data-title={project.title.toLowerCase()}
-              data-description={(project.description || '').toLowerCase()}
-              data-category={category}
+            <article 
+              data-project-item 
+              data-title={title.toLowerCase()} 
+              data-description={description.toLowerCase()} 
+              data-category={category} 
               data-side={isReverse ? 'right' : 'left'}
-              class="project-item rounded-3xl border border-white/10 bg-white/[0.03] p-3 md:p-4 hover:border-white/20 transition-colors duration-300"
+              class="project-item rounded-3xl border border-white/10 bg-[#0D1322]/80 p-3 md:p-4 hover:border-white/20 transition-all duration-300"
             >
               <div class={`grid gap-4 md:grid-cols-12 ${isReverse ? 'md:[&>figure]:order-2 md:[&>div]:order-1' : ''}`}>
-                <figure class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-[#03060d] md:col-span-7 md:h-64">
-                  {image ? (
-                    <img src={image} alt={project.title} class="h-full w-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
+                <figure class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 md:col-span-7 md:h-64">
+                  {displayImage ? (
+                    <img src={displayImage} alt={title} class="h-full w-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
                   ) : (
-                    <div class="flex h-full items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-zinc-600">{t['work.no_image']}</div>
+                    <div class="flex h-full items-center justify-center text-zinc-600 text-xs font-bold uppercase tracking-widest">{t['work.no_image']}</div>
                   )}
-                  <div class="absolute inset-0 bg-gradient-to-t from-[#03060d]/90 via-[#03060d]/20 to-transparent"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
                 </figure>
 
-                <div class="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:col-span-5">
+                <div class="flex flex-col justify-between p-4 md:col-span-5">
                   <div>
                     <div class="mb-3 flex items-center justify-between gap-3">
-                      <span class="inline-flex rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300">
-                        {category}
-                      </span>
+                      <span class="rounded-full border border-white/15 bg-white/5 px-3 py-1 text-[10px] font-bold text-zinc-300 uppercase tracking-widest">{category}</span>
                       <span class="text-[10px] font-mono uppercase tracking-[0.12em] text-zinc-500">#{(index + 1).toString().padStart(2, '0')}</span>
                     </div>
-                    <h3 class="text-[22px] md:text-2xl font-bold text-white/95 drop-shadow-sm leading-snug line-clamp-2">{project.title}</h3>
-                    <p class="mt-3 line-clamp-4 text-sm leading-relaxed text-white/65">{project.description || t['work.no_desc']}</p>
+                    <h3 class="text-2xl font-black text-white tracking-tight uppercase line-clamp-2">{title}</h3>
+                    <p class="mt-3 text-sm leading-relaxed text-[#94a3b8] line-clamp-4">{description || t['work.no_desc']}</p>
                   </div>
+
                   <div class="mt-5 flex items-center justify-between">
-                    <span class="text-[10px] uppercase tracking-[0.12em] text-zinc-500">Story Card</span>
-                    {href ? (
-                      <a
-                        href={href}
-                        target={external ? '_blank' : undefined}
-                        rel={external ? 'noopener noreferrer' : undefined}
-                        class="inline-flex items-center gap-2 rounded-xl border border-amber-200/35 bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-100/90 transition-all hover:bg-white/10 hover:border-amber-200/55"
-                      >
-                        {t['work.view']}
-                        <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M7 7h10v10"></path></svg>
-                      </a>
-                    ) : (
-                      <span class="inline-flex rounded-xl border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500">{t['work.no_link']}</span>
-                    )}
+                    <span class="text-[10px] uppercase text-zinc-500 font-bold tracking-[0.2em] italic">Story Card</span>
+                    <a href={link} target={link.startsWith('http') ? "_blank" : "_self"} class="inline-flex items-center gap-2 rounded-xl border border-amber-200/30 bg-white/5 px-4 py-2 text-[10px] font-bold uppercase text-amber-100 hover:bg-white/10 hover:border-amber-200/60 transition-all active:scale-95 shadow-lg">
+                      {t['work.view']}
+                      <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M7 17 17 7M7 7h10v10"/></svg>
+                    </a>
                   </div>
                 </div>
               </div>
             </article>
           );
         })}
+
+        {Array.from({ length: 3 }).map((_, index) => (
+          <article 
+            data-project-placeholder 
+            data-side={index % 2 === 0 ? 'left' : 'right'}
+            class="project-item project-placeholder is-hidden rounded-3xl border border-white/5 bg-white/[0.01] p-3 md:p-4 opacity-40"
+          >
+            <div class={`grid gap-4 md:grid-cols-12 ${index % 2 !== 0 ? 'md:[&>div:first-child]:order-2 md:[&>div:last-child]:order-1' : ''}`}>
+              <div class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] md:col-span-7 md:h-64">
+                <div class="skeleton-line h-full w-full"></div>
+              </div>
+              <div class="flex flex-col justify-between p-4 md:col-span-5">
+                <div class="space-y-4">
+                  <div class="h-4 w-20 rounded-full skeleton-line"></div>
+                  <div class="h-8 w-3/4 rounded-lg skeleton-line"></div>
+                  <div class="h-16 w-full rounded-lg skeleton-line"></div>
+                </div>
+                <div class="mt-5 h-10 w-32 rounded-xl skeleton-line"></div>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
 
-      <div class="mt-7 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
-        <p data-page-label class="text-xs uppercase tracking-[0.14em] text-zinc-400">{t['work.page']}</p>
-        <div class="flex w-full items-center gap-2 sm:w-auto">
-          <button type="button" data-page-prev class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-amber-200/35 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
-            {t['work.prev']}
-          </button>
-          <button type="button" data-page-next class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-amber-200/35 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
-            {t['work.next']}
-          </button>
-        </div>
+      <div class="mt-8 flex items-center justify-between border-t border-white/10 pt-6">
+        <button data-page-prev class="h-10 px-6 rounded-xl border border-white/10 bg-white/5 text-[10px] font-bold uppercase tracking-widest text-zinc-400 transition-all hover:border-amber-200/40 hover:text-amber-100 disabled:opacity-20 disabled:pointer-events-none">
+          {lang === 'ro' ? 'Anterior' : 'Previous'}
+        </button>
+        <span data-page-label class="text-[10px] font-bold uppercase tracking-[0.2em] text-zinc-500"></span>
+        <button data-page-next class="h-10 px-6 rounded-xl border border-white/10 bg-white/5 text-[10px] font-bold uppercase tracking-widest text-zinc-400 transition-all hover:border-amber-200/40 hover:text-amber-100 disabled:opacity-20 disabled:pointer-events-none">
+          {lang === 'ro' ? 'Următor' : 'Next'}
+        </button>
       </div>
 
-      <div data-empty-state class="hidden mt-5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-8 text-center text-sm text-zinc-400">
+      <div data-empty-state class="hidden mt-10 py-20 text-center border border-dashed border-white/10 rounded-3xl text-zinc-500 text-sm">
         {t['work.empty']}
       </div>
     </div>

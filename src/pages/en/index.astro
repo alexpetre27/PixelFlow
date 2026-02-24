@@ -3,22 +3,35 @@ import Layout from '@/layouts/Layout.astro';
 
 import Hero from '@/components/Hero.astro';
 import Services from '@/components/Services.astro';
-import Work from '@/components/Projects.astro';
+import Work from '@/components/Projects.astro'; 
 import Testimonials from '@/components/Testimonials.astro';
 import Contact from '@/components/Contact.astro';
 import Footer from '@/components/Footer.astro';
+import CookieBanner from '@/components/CookieBanner.astro';
+
 import { sanityClient } from 'sanity:client';
-const sanityProjects = await sanityClient.fetch(`*[_type == "project"]{...}`);
----
+import { client } from '@/lib/sanity';
+
+const sanityProjects = await client.fetch(`*[_type == "project"] | order(_createdAt desc) {
+  title,
+  category,
+  description,
+  "imageUrl": image.asset->url,
+  slug,
+  link,
+  github
+}`);---
 
 <Layout title="Pixelflow Studio | Premium Digital Agency">
   <main>
     <Hero lang="en" />
     <Services lang="en" />
-<Work lang="en" projects={sanityProjects} /> 
-   <Testimonials lang="en" />
+
+    <Work lang="en" projects={sanityProjects} /> 
+    <Testimonials lang="en" />
     <Contact lang="en" />
   </main>
 
   <Footer lang="en" />
+  <CookieBanner lang="en" />
 </Layout>

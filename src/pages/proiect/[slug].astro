@@ -3,64 +3,88 @@ import Layout from '../../layouts/Layout.astro';
 import { client } from '../../lib/sanity';
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { ui } from '@/i18n/ui';
 
 export async function getStaticPaths() {
-  const projects = await client.fetch(`*[_type == "project" && defined(slug.current)]{ "slug": slug.current }`);
+  const projects = await client.fetch(`*[_type == "project" && defined(slug.current)]{ 
+    "slug": slug.current 
+  }`);
 
-  return projects
-    .filter((project: any) => typeof project?.slug === 'string' && project.slug.trim().length > 0)
-    .map((project: any) => ({
-    params: { slug: project.slug },
-    }));
+  const langs = ['ro', 'en'];
+  
+  return langs.flatMap((lang) => {
+    return projects
+      .filter((project: any) => project?.slug)
+      .map((project: any) => ({
+        params: { 
+          lang: lang === 'ro' ? undefined : 'en', 
+          slug: project.slug 
+        },
+        props: { lang }
+      }));
+  });
 }
 
 const { slug } = Astro.params;
+const { lang = 'ro' } = Astro.props;
+const t = ui[lang as keyof typeof ui];
 
 const project = await client.fetch(`*[_type == "project" && slug.current == $slug][0]{
   title,
   description,
   category,
-  "imageUrl": image.asset->url
+  "imageUrl": image.asset->url,
+  link
 }`, { slug });
+
+const displayDesc = Array.isArray(project.description)
+  ? project.description.map((block: { children: any[]; }) => block.children?.map((c: any) => c.text).join('')).join(' ')
+  : project.description;
+
+const backUrl = lang === 'en' ? '/en/#work' : '/#work';
 ---
 
-<Layout title={`${project.title} | Pixelflow`}>
+<Layout title={`${project.title} | Pixelflow`} lang={lang}>
   <main class="max-w-5xl mx-auto px-6 py-32 min-h-screen">
     <div class="mb-12">
-      <a href="/" class="group inline-flex items-center gap-2 text-zinc-500 hover:text-white transition-colors">
+      <a href={backUrl} class="group inline-flex items-center gap-2 text-zinc-500 hover:text-amber-200 transition-colors text-sm font-bold uppercase tracking-widest">
         <span class="group-hover:-translate-x-1 transition-transform">←</span> 
-        Înapoi la portofoliu
+        {lang === 'ro' ? 'Înapoi la portofoliu' : 'Back to portfolio'}
       </a>
     </div>
     
-    <article class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-      <div class="space-y-6">
-        <Badge variant="secondary" className="bg-blue-500/10 text-blue-400 border-none px-4 py-1 text-xs uppercase tracking-widest font-bold">
+    <article class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div class="space-y-8">
+        <Badge className="bg-amber-200/10 text-amber-200 border border-amber-200/20 px-4 py-1 text-[10px] uppercase tracking-[0.2em] font-bold rounded-full">
           {project.category}
         </Badge>
         
-        <h1 class="text-6xl font-black text-white tracking-tighter uppercase leading-none">
+        <h1 class="text-5xl md:text-7xl font-black text-white tracking-tighter uppercase leading-[0.9]">
           {project.title}
         </h1>
         
-        <p class="text-zinc-400 text-xl leading-relaxed font-light">
-          {project.description}
+        <p class="text-white/60 text-lg leading-relaxed font-light max-w-md">
+          {displayDesc}
         </p>
 
-        <div class="pt-8">
-          <Button className="bg-white text-black hover:bg-zinc-200 rounded-full px-10 py-6 text-lg font-bold transition-all hover:scale-105 active:scale-95">
-            Lansează Proiectul
-          </Button>
+        <div class="pt-4">
+          <a href={project.link || "#"} target="_blank" rel="noopener noreferrer">
+            <Button className="bg-amber-200 text-black hover:bg-white rounded-full px-10 py-7 text-xs uppercase tracking-widest font-black transition-all hover:scale-105 active:scale-95 shadow-[0_20px_50px_rgba(251,191,36,0.15)]">
+              {lang === 'ro' ? 'Lansează Proiectul' : 'Launch Project'}
+            </Button>
+          </a>
         </div>
       </div>
 
       <div class="relative group">
-        <div class="absolute -inset-1 bg-linear-to-r from-blue-600 to-purple-600 rounded-4xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
-        <img 
-          src={project.imageUrl} 
-          alt={project.title} 
-          class="relative w-full aspect-4/5 object-cover rounded-4xl border border-white/10 shadow-2xl"
-        />
+        <div class="absolute -inset-1 bg-gradient-to-r from-amber-200 to-amber-500 rounded-[2rem] blur opacity-10 group-hover:opacity-25 transition duration-1000"></div>
+        <div class="relative aspect-[4/5] overflow-hidden rounded-[2rem] border border-white/10 bg-zinc-900 shadow-2xl">
+          <img 
+            src={project.imageUrl} 
+            alt={project.title} 
+            class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          />
+        </div>
       </div>
     </article>
   </main>

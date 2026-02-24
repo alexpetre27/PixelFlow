@@ -1,11 +1,13 @@
 ﻿---
 import '@/styles/testimonials.css';
 import testimonialsScriptUrl from '@/scripts/testimonials.ts?url';
-import { testimonials } from '@/data/testimonials';
+import { testimonialsData } from '@/data/testimonials'; 
 import { ui } from '@/i18n/ui';
 
 const { lang = 'ro' } = Astro.props;
 const t = ui[lang as keyof typeof ui];
+
+const testimonials = testimonialsData[lang as keyof typeof testimonialsData];
 ---
 
 <section id="testimonials" class="relative w-full overflow-visible bg-[#03060d] py-24">
