@@ -6,7 +6,7 @@ const t = ui[lang as keyof typeof ui];
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="relative w-full overflow-hidden bg-gradient-to-b from-[#03060d] to-black">
+<footer class="relative w-full overflow-hidden bg-linear-to-b from-[#03060d] to-black">
   <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:py-14">
     <div class="grid gap-8 md:grid-cols-12 md:items-start">
       <div class="md:col-span-5">
@@ -41,7 +41,7 @@ const currentYear = new Date().getFullYear();
     </div>
 
     {lang === 'ro' && (
-      <div class="grid gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4 md:grid-cols-12 md:items-center">
+      <div class="grid gap-6 rounded-2xl border border-white/10 bg-white/2 p-4 md:grid-cols-12 md:items-center">
         <div class="md:col-span-6">
           <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">{t['footer.legal.compliance']}</p>
         </div>
@@ -50,19 +50,19 @@ const currentYear = new Date().getFullYear();
             href="https://anpc.ro/sal/"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-[210px]"
+            class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-52.5"
             aria-label="Soluționarea Alternativă a Litigiilor - ANPC"
           >
-            <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="ANPC SAL" class="h-[42px] w-full object-cover" loading="lazy" />
+            <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="ANPC SAL" class="h-10.5 w-full object-cover" loading="lazy" />
           </a>
           <a
             href="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png"
             target="_blank"
             rel="noopener noreferrer"
-            class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-[210px]"
+            class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-52.5"
             aria-label="Soluționarea Online a Litigiilor"
           >
-            <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="ANPC SOL" class="h-[42px] w-full object-cover" loading="lazy" />
+            <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="ANPC SOL" class="h-10.5 w-full object-cover" loading="lazy" />
           </a>
         </div>
       </div>
