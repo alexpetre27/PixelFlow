@@ -7,14 +7,16 @@ import Work from '@/components/Projects.astro';
 import Testimonials from '@/components/Testimonials.astro';
 import Contact from '@/components/Contact.astro';
 import Footer from '@/components/Footer.astro';
+import { sanityClient } from 'sanity:client';
+const sanityProjects = await sanityClient.fetch(`*[_type == "project"]{...}`);
 ---
 
 <Layout title="Pixelflow Studio | Premium Digital Agency">
   <main>
     <Hero lang="en" />
     <Services lang="en" />
-    <Work lang="en" />
-    <Testimonials lang="en" />
+<Work lang="en" projects={sanityProjects} /> 
+   <Testimonials lang="en" />
     <Contact lang="en" />
   </main>
 

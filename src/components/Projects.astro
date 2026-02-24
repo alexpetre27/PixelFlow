@@ -22,6 +22,7 @@ const { lang = 'ro', projects = [], pinnedProjectTitle = 'MicroManager' } = Astr
 
 const t = ui[lang];
 const normalizedPinnedTitle = pinnedProjectTitle.trim().toLowerCase();
+
 const orderedProjects = [...projects].sort((a, b) => {
   const aPinned = a.title.trim().toLowerCase() === normalizedPinnedTitle ? 1 : 0;
   const bPinned = b.title.trim().toLowerCase() === normalizedPinnedTitle ? 1 : 0;
@@ -50,7 +51,6 @@ const categories = Array.from(
 ---
 
 <section id="work" data-projects-editorial class="relative w-full overflow-hidden bg-[#03060d] py-24">
-
   <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
     <header class="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div>
@@ -131,14 +131,11 @@ const categories = Array.from(
                       </span>
                       <span class="text-[10px] font-mono uppercase tracking-[0.12em] text-zinc-500">#{(index + 1).toString().padStart(2, '0')}</span>
                     </div>
-
                     <h3 class="text-[22px] md:text-2xl font-bold text-white/95 drop-shadow-sm leading-snug line-clamp-2">{project.title}</h3>
                     <p class="mt-3 line-clamp-4 text-sm leading-relaxed text-white/65">{project.description || t['work.no_desc']}</p>
                   </div>
-
                   <div class="mt-5 flex items-center justify-between">
                     <span class="text-[10px] uppercase tracking-[0.12em] text-zinc-500">Story Card</span>
-
                     {href ? (
                       <a
                         href={href}
@@ -158,31 +155,6 @@ const categories = Array.from(
             </article>
           );
         })}
-
-        {Array.from({ length: 3 }).map((_, index) => (
-          <article
-            data-project-placeholder
-            data-side={index % 2 === 0 ? 'left' : 'right'}
-            class="project-item project-placeholder is-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-3 md:p-4"
-            aria-hidden="true"
-          >
-            <div class="grid gap-4 md:grid-cols-12">
-              <div class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-white/[0.03] md:col-span-7 md:h-64">
-                <div class="skeleton-line h-full w-full"></div>
-              </div>
-              <div class="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:col-span-5">
-                <div>
-                  <div class="mb-3 h-6 w-24 rounded-full skeleton-line bg-white/5"></div>
-                  <div class="h-8 w-3/4 rounded-md skeleton-line bg-white/5"></div>
-                  <div class="mt-3 h-4 w-full rounded-md skeleton-line bg-white/5"></div>
-                  <div class="mt-2 h-4 w-5/6 rounded-md skeleton-line bg-white/5"></div>
-                  <div class="mt-2 h-4 w-2/3 rounded-md skeleton-line bg-white/5"></div>
-                </div>
-                <div class="mt-5 h-9 w-28 rounded-xl skeleton-line bg-white/5"></div>
-              </div>
-            </div>
-          </article>
-        ))}
       </div>
 
       <div class="mt-7 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
