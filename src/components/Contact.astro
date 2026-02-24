@@ -1,13 +1,15 @@
 ﻿---
 import '@/styles/contact.css';
 import contactScriptUrl from '@/scripts/contact.ts?url';
+import { ui } from '@/i18n/ui';
+
+const { lang = 'ro' } = Astro.props;
+const t = ui[lang as keyof typeof ui];
 
 const company = {
   name: 'Pixelflow Studio',
   email: 'contact@pixelflow.studio',
   phone: '+40 784 360 067',
-  schedule: 'Luni - Vineri, 09:00 - 18:00',
-  location: 'București, RO (Remote)',
 };
 ---
 
@@ -18,46 +20,46 @@ const company = {
     <div class="mb-12 flex flex-col items-center text-center space-y-4">
       <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-widest text-zinc-300 backdrop-blur-sm">
         <span class="h-2 w-2 rounded-full bg-amber-200/80"></span>
-        Contact
+        {t['contact.badge']}
       </span>
       <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
-        Hai să discutăm despre
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-100 to-amber-300/80"> următorul tău proiect.</span>
+        {t['contact.title.1']}
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-100 to-amber-300/80">{t['contact.title.2']}</span>
       </h2>
       <p class="max-w-2xl text-lg font-light text-white/65">
-        Completează formularul, iar noi revenim cu un plan clar, estimare și pași concreți de implementare.
+        {t['contact.desc']}
       </p>
     </div>
 
     <div class="grid gap-6 lg:grid-cols-12">
       <aside class="space-y-4 lg:col-span-5">
         <article class="rounded-3xl border border-white/10 bg-white/[0.02] p-6 shadow-xl shadow-black/40">
-          <p class="text-[11px] uppercase tracking-[0.14em] text-zinc-500">Companie</p>
+          <p class="text-[11px] uppercase tracking-[0.14em] text-zinc-500">{t['contact.comp.label']}</p>
           <h3 class="mt-2 text-2xl font-black text-white">{company.name}</h3>
-          <p class="mt-2 text-sm text-white/65">Partener digital pentru website-uri rapide, scalabile și orientate spre conversie.</p>
+          <p class="mt-2 text-sm text-white/65">{t['contact.comp.desc']}</p>
           <ul class="mt-4 space-y-2 text-xs text-zinc-300">
-            <li>Răspuns în mai puțin de 24h lucrătoare</li>
-            <li>Estimare inițială gratuită</li>
-            <li>NDA disponibil la cerere</li>
+            <li>{t['contact.comp.b1']}</li>
+            <li>{t['contact.comp.b2']}</li>
+            <li>{t['contact.comp.b3']}</li>
           </ul>
         </article>
 
         <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
           <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Email</p>
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{t['contact.info.email']}</p>
             <a href={`mailto:${company.email}`} class="mt-1 block text-sm font-semibold text-amber-100/90 hover:text-amber-200 transition-colors">{company.email}</a>
           </article>
           <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Telefon</p>
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{t['contact.info.phone']}</p>
             <a href={`tel:${company.phone.replace(/\s+/g, '')}`} class="mt-1 block text-sm font-semibold text-white hover:text-amber-200 transition-colors">{company.phone}</a>
           </article>
           <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Program</p>
-            <p class="mt-1 text-sm font-semibold text-white">{company.schedule}</p>
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{t['contact.info.schedule']}</p>
+            <p class="mt-1 text-sm font-semibold text-white">{t['contact.info.schedule.val']}</p>
           </article>
           <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4">
-            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">Locație</p>
-            <p class="mt-1 text-sm font-semibold text-white">{company.location}</p>
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{t['contact.info.location']}</p>
+            <p class="mt-1 text-sm font-semibold text-white">{t['contact.info.location.val']}</p>
           </article>
         </div>
       </aside>
@@ -69,8 +71,8 @@ const company = {
 
           <div class="contact-grid">
             <label class="contact-field" for="contact-name">
-              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Nume complet</span>
-              <input id="contact-name" class="contact-input" type="text" name="name" placeholder="Ex: Andrei Popescu" required aria-describedby="error-name" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">{t['contact.form.name']}</span>
+              <input id="contact-name" class="contact-input" type="text" name="name" placeholder={t['contact.form.name.ph']} required aria-describedby="error-name" />
               <span id="error-name" class="contact-error" data-contact-error-for="name"></span>
             </label>
             <label class="contact-field" for="contact-email">
@@ -82,33 +84,33 @@ const company = {
 
           <div class="contact-grid">
             <label class="contact-field" for="contact-company">
-              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Companie</span>
-              <input id="contact-company" class="contact-input" type="text" name="company" placeholder="Numele companiei" />
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">{t['contact.form.company']}</span>
+              <input id="contact-company" class="contact-input" type="text" name="company" placeholder={t['contact.form.company.ph']} />
               <span class="contact-error"></span>
             </label>
             <label class="contact-field" for="contact-budget">
-              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Buget estimat</span>
+              <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">{t['contact.form.budget']}</span>
               <select id="contact-budget" class="contact-input contact-select" name="budget">
-                <option value="">Alege interval</option>
-                <option value="1000-2500">1.000 - 2.500 EUR</option>
-                <option value="2500-5000">2.500 - 5.000 EUR</option>
-                <option value="5000-10000">5.000 - 10.000 EUR</option>
-                <option value="10000+">10.000+ EUR</option>
+                <option value="">{t['contact.form.budget.ph']}</option>
+                <option value="1000-2500">{lang === 'ro' ? '1.000 - 2.500 EUR' : '$1,000 - $2,500'}</option>
+                <option value="2500-5000">{lang === 'ro' ? '2.500 - 5.000 EUR' : '$2,500 - $5,000'}</option>
+                <option value="5000-10000">{lang === 'ro' ? '5.000 - 10.000 EUR' : '$5,000 - $10,000'}</option>
+                <option value="10000+">{lang === 'ro' ? '10.000+ EUR' : '$10,000+'}</option>
               </select>
               <span class="contact-error"></span>
             </label>
           </div>
 
           <label class="contact-field flex flex-1 flex-col" for="contact-message">
-            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">Mesaj</span>
-            <textarea id="contact-message" class="contact-input min-h-32 flex-1 resize-y" name="message" placeholder="Spune-ne pe scurt ce vrei să construim..." required aria-describedby="error-message"></textarea>
+            <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400">{t['contact.form.msg']}</span>
+            <textarea id="contact-message" class="contact-input min-h-32 flex-1 resize-y" name="message" placeholder={t['contact.form.msg.ph']} required aria-describedby="error-message"></textarea>
             <span id="error-message" class="contact-error" data-contact-error-for="message"></span>
           </label>
 
           <div class="mt-auto flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <p data-contact-status class="text-sm text-zinc-400">Răspundem de obicei în aceeași zi lucrătoare.</p>
+            <p data-contact-status class="text-sm text-zinc-400">{t['contact.form.reply']}</p>
             <button type="submit" data-contact-submit class="inline-flex h-11 items-center justify-center rounded-xl border border-amber-200/35 bg-white/5 px-6 text-xs font-bold uppercase tracking-[0.14em] text-amber-100/90 transition-all hover:bg-white/10 hover:border-amber-200/55 disabled:cursor-not-allowed disabled:opacity-60">
-              Trimite mesaj
+              {t['contact.form.submit']}
             </button>
           </div>
         </form>

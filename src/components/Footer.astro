@@ -1,8 +1,12 @@
 ﻿---
+import { ui } from '@/i18n/ui';
+
+const { lang = 'ro' } = Astro.props;
+const t = ui[lang as keyof typeof ui];
 const currentYear = new Date().getFullYear();
 ---
 
-<footer class="relative w-full overflow-hidden bg-linear-to-b from-[#03060d] to-black">
+<footer class="relative w-full overflow-hidden bg-gradient-to-b from-[#03060d] to-black">
   <div class="mx-auto flex w-full max-w-7xl flex-col gap-8 px-6 py-12 md:py-14">
     <div class="grid gap-8 md:grid-cols-12 md:items-start">
       <div class="md:col-span-5">
@@ -11,23 +15,23 @@ const currentYear = new Date().getFullYear();
           <span class="text-sm font-black tracking-[0.16em] text-white">PIXELFLOW STUDIO</span>
         </a>
         <p class="mt-4 max-w-md text-sm leading-relaxed text-white/65">
-          Construim produse digitale rapide, curate și scalabile, cu focus pe conversii și experiența utilizatorului.
+          {t['footer.desc']}
         </p>
       </div>
 
       <div class="md:col-span-3">
-        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">Navigare</p>
+        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">{t['footer.nav']}</p>
         <div class="mt-4 flex flex-col gap-2 text-sm">
-          <a href="/#home" class="text-zinc-300 transition-colors hover:text-amber-200">Acasă</a>
-          <a href="/#services" class="text-zinc-300 transition-colors hover:text-amber-200">Servicii</a>
-          <a href="/#work" class="text-zinc-300 transition-colors hover:text-amber-200">Proiecte</a>
-          <a href="/#testimonials" class="text-zinc-300 transition-colors hover:text-amber-200">Testimoniale</a>
-          <a href="/#contact" class="text-zinc-300 transition-colors hover:text-amber-200">Contact</a>
+          <a href="/#home" class="text-zinc-300 transition-colors hover:text-amber-200">{t['footer.nav.home']}</a>
+          <a href="/#services" class="text-zinc-300 transition-colors hover:text-amber-200">{t['footer.nav.services']}</a>
+          <a href="/#work" class="text-zinc-300 transition-colors hover:text-amber-200">{t['footer.nav.work']}</a>
+          <a href="/#testimonials" class="text-zinc-300 transition-colors hover:text-amber-200">{t['footer.nav.test']}</a>
+          <a href="/#contact" class="text-zinc-300 transition-colors hover:text-amber-200">{t['footer.nav.contact']}</a>
         </div>
       </div>
 
       <div class="md:col-span-4">
-        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">Date firmă</p>
+        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">{t['footer.company']}</p>
         <div class="mt-4 space-y-2 text-sm text-zinc-300">
           <p>Pixelflow Studio SRL</p>
           <a href="mailto:contact@pixelflow.studio" class="block transition-colors hover:text-amber-200">contact@pixelflow.studio</a>
@@ -36,42 +40,44 @@ const currentYear = new Date().getFullYear();
       </div>
     </div>
 
-    <div class="grid gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4 md:grid-cols-12 md:items-center">
-      <div class="md:col-span-6">
-        <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">Conformitate consumatori</p>
+    {lang === 'ro' && (
+      <div class="grid gap-6 rounded-2xl border border-white/10 bg-white/[0.02] p-4 md:grid-cols-12 md:items-center">
+        <div class="md:col-span-6">
+          <p class="text-[11px] font-bold uppercase tracking-[0.16em] text-zinc-500">{t['footer.legal.compliance']}</p>
+        </div>
+        <div class="flex flex-col gap-2 sm:flex-row sm:items-center md:col-span-6 md:justify-end">
+          <a
+            href="https://anpc.ro/sal/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-[210px]"
+            aria-label="Soluționarea Alternativă a Litigiilor - ANPC"
+          >
+            <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="ANPC SAL" class="h-[42px] w-full object-cover" loading="lazy" />
+          </a>
+          <a
+            href="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-[210px]"
+            aria-label="Soluționarea Online a Litigiilor"
+          >
+            <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="ANPC SOL" class="h-[42px] w-full object-cover" loading="lazy" />
+          </a>
+        </div>
       </div>
-      <div class="flex flex-col gap-2 sm:flex-row sm:items-center md:col-span-6 md:justify-end">
-        <a
-          href="https://anpc.ro/sal/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-[210px]"
-          aria-label="Soluționarea Alternativă a Litigiilor - ANPC"
-        >
-          <img src="https://anpc.ro/wp-content/uploads/2022/07/SAL-PICTOGRAMA.png" alt="ANPC SAL" class="h-[42px] w-full object-cover" loading="lazy" />
-        </a>
-        <a
-          href="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="inline-flex w-full overflow-hidden rounded-xl border border-white/15 transition-colors hover:border-amber-200/50 sm:w-[210px]"
-          aria-label="Soluționarea Online a Litigiilor"
-        >
-          <img src="https://anpc.ro/wp-content/uploads/2022/08/pictogramaSOL.png" alt="ANPC SOL" class="h-[42px] w-full object-cover" loading="lazy" />
-        </a>
-      </div>
-    </div>
+    )}
 
     <div class="flex flex-wrap items-center gap-x-4 gap-y-2 text-xs text-zinc-400">
-      <a href="/termeni-si-conditii" class="transition-colors hover:text-amber-200">Termeni și Condiții</a>
-      <a href="/politica-de-confidentialitate" class="transition-colors hover:text-amber-200">Politica de Confidențialitate</a>
-      <a href="/politica-de-cookies" class="transition-colors hover:text-amber-200">Politica de Cookies</a>
+      <a href="/termeni-si-conditii" class="transition-colors hover:text-amber-200">{t['footer.legal.terms']}</a>
+      <a href="/politica-de-confidentialitate" class="transition-colors hover:text-amber-200">{t['footer.legal.privacy']}</a>
+      <a href="/politica-de-cookies" class="transition-colors hover:text-amber-200">{t['footer.legal.cookies']}</a>
     </div>
 
     <div class="h-px w-full bg-white/10"></div>
 
     <div class="flex flex-col gap-2 text-xs text-zinc-500 sm:flex-row sm:items-center sm:justify-between">
-      <p>© {currentYear} Pixelflow Studio. Toate drepturile rezervate.</p>
+      <p>© {currentYear} Pixelflow Studio. {t['footer.rights']}</p>
     </div>
   </div>
 </footer>
