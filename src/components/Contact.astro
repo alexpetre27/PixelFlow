@@ -37,7 +37,7 @@ const company = {
 
     <div class="grid gap-6 lg:grid-cols-12">
       <aside class="space-y-4 lg:col-span-5">
-        <article class="rounded-3xl border border-white/10 bg-white/[0.02] p-6 shadow-xl shadow-black/40">
+        <article class="rounded-3xl border border-white/10 bg-white/[0.02] p-6 shadow-xl shadow-black/40 transition-all hover:bg-white/[0.04]">
           <p class="text-[11px] uppercase tracking-[0.14em] text-zinc-500">
             {lang === 'ro' ? 'Despre noi' : 'About us'}
           </p>
@@ -67,6 +67,10 @@ const company = {
             <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{lang === 'ro' ? 'Program' : 'Schedule'}</p>
             <p class="mt-1 text-sm font-semibold text-white">{lang === 'ro' ? 'Luni - Vineri: 09:00 - 18:00' : 'Mon - Fri: 09:00 AM - 06:00 PM'}</p>
           </article>
+          <article class="rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition-all hover:bg-white/[0.05]">
+            <p class="text-[10px] uppercase tracking-[0.14em] text-zinc-500">{lang === 'ro' ? 'Locatie' : 'Location'}</p>
+            <p class="mt-1 text-sm font-semibold text-white">Bucharest, Romania</p>
+          </article>
         </div>
       </aside>
 
@@ -86,7 +90,7 @@ const company = {
               <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400 ml-1">Email</span>
               <input id="contact-email" class="contact-input w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-amber-200/40 transition-all" type="email" name="email" placeholder="hello@company.com" required />
               <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider ml-1 mt-1 hidden" data-contact-error-for="email"></span>
-            </label>
+          
           </div>
 
           <div class="grid gap-5 md:grid-cols-2">

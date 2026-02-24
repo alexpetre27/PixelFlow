@@ -6,10 +6,13 @@ type FieldKey = "name" | "email" | "message";
 type FieldInput = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
 const initContactForm = (root: Element) => {
-  const currentLang = document.documentElement.lang || "ro";
   const form = root as HTMLFormElement;
-
   if (form.dataset.contactInit === "true") return;
+
+  const getLang = () => {
+    const urlPath = window.location.pathname;
+    return urlPath.includes("/en/") || urlPath.startsWith("/en") ? "en" : "ro";
+  };
 
   const status = form.querySelector<HTMLElement>("[data-contact-status]");
   const submitButton = form.querySelector<HTMLButtonElement>(
@@ -18,7 +21,6 @@ const initContactForm = (root: Element) => {
   const startedAtField = form.querySelector<HTMLInputElement>(
     "[data-form-started-at]",
   );
-  // Asigură-te că numele coincide cu cel din componenta .astro
   const honeypot = form.querySelector<HTMLInputElement>(
     'input[name="honeypot"]',
   );
@@ -37,37 +39,32 @@ const initContactForm = (root: Element) => {
     company: form.querySelector<HTMLInputElement>('input[name="company"]'),
     budget: form.querySelector<HTMLSelectElement>('select[name="budget"]'),
   };
-
-  const errorEls: Partial<Record<FieldKey, HTMLElement>> = {
-    name:
-      form.querySelector<HTMLElement>('[data-contact-error-for="name"]') ??
-      undefined,
-    email:
-      form.querySelector<HTMLElement>('[data-contact-error-for="email"]') ??
-      undefined,
-    message:
-      form.querySelector<HTMLElement>('[data-contact-error-for="message"]') ??
-      undefined,
+  const errorEls: Record<FieldKey, HTMLElement | null> = {
+    name: form.querySelector<HTMLElement>('[data-contact-error-for="name"]'),
+    email: form.querySelector<HTMLElement>('[data-contact-error-for="email"]'),
+    message: form.querySelector<HTMLElement>(
+      '[data-contact-error-for="message"]',
+    ),
   };
 
   const validators: Record<FieldKey, (value: string) => string> = {
     name: (v) =>
       v.trim().length < 2
-        ? currentLang === "en"
-          ? "Enter a valid name (min 2 characters)."
-          : "Introdu un nume valid (minim 2 caractere)."
+        ? getLang() === "en"
+          ? "Name is too short."
+          : "Numele este prea scurt."
         : "",
     email: (v) =>
       !isValidEmail(v.trim())
-        ? currentLang === "en"
-          ? "Enter a valid email address."
+        ? getLang() === "en"
+          ? "Please enter a valid email."
           : "Introdu o adresă de email validă."
         : "",
     message: (v) =>
       v.trim().length < 10
-        ? currentLang === "en"
-          ? "Message must be at least 10 characters."
-          : "Mesajul trebuie să aibă cel puțin 10 caractere."
+        ? getLang() === "en"
+          ? "Message is too short."
+          : "Mesajul este prea scurt."
         : "",
   };
 
@@ -79,7 +76,6 @@ const initContactForm = (root: Element) => {
     if (!field) return;
     const hasError = message.length > 0;
     field.classList.toggle("is-invalid", hasError);
-    field.setAttribute("aria-invalid", hasError ? "true" : "false");
     const errorEl = errorEls[key];
     if (errorEl) {
       errorEl.textContent = message;
@@ -112,23 +108,21 @@ const initContactForm = (root: Element) => {
 
   form.addEventListener("submit", async (event) => {
     event.preventDefault();
+    const L = getLang();
 
     if ((honeypot?.value || "").trim().length > 0) {
       updateStatus(
-        currentLang === "en"
-          ? "Could not process request."
-          : "Nu am putut procesa trimiterea.",
+        L === "en" ? "Request denied." : "Nu am putut procesa trimiterea.",
         "error",
       );
       return;
     }
 
-    const elapsed = Date.now() - Number(startedAtField.value || "0");
-    if (elapsed < MIN_FILL_TIME_MS) {
+    if (Date.now() - Number(startedAtField.value || "0") < MIN_FILL_TIME_MS) {
       updateStatus(
-        currentLang === "en"
-          ? "Please check fields and try again."
-          : "Te rugăm să verifici câmpurile și să încerci din nou.",
+        L === "en"
+          ? "Please fill the form naturally."
+          : "Te rugăm să verifici câmpurile.",
         "error",
       );
       return;
@@ -160,9 +154,7 @@ const initContactForm = (root: Element) => {
     if (firstInvalid) {
       fields[firstInvalid]?.focus();
       updateStatus(
-        currentLang === "en"
-          ? "Please correct the highlighted fields."
-          : "Completează corect câmpurile marcate.",
+        L === "en" ? "Correct the errors." : "Corectează erorile.",
         "error",
       );
       return;
@@ -170,14 +162,8 @@ const initContactForm = (root: Element) => {
 
     submitButton.disabled = true;
     const originalBtnText = submitButton.textContent;
-    submitButton.textContent =
-      currentLang === "en" ? "Sending..." : "Se trimite...";
-    updateStatus(
-      currentLang === "en"
-        ? "Sending message to our team..."
-        : "Trimitem mesajul către echipă...",
-      "info",
-    );
+    submitButton.textContent = L === "en" ? "Sending..." : "Se trimite...";
+    updateStatus(L === "en" ? "Sending..." : "Trimitem...", "info");
 
     try {
       const response = await fetch("/api/contact", {
@@ -188,50 +174,26 @@ const initContactForm = (root: Element) => {
 
       const payload = await response.json();
       if (!response.ok)
-        throw new Error(
-          payload.message ||
-            (currentLang === "en" ? "Send failed." : "Trimiterea a eșuat."),
-        );
+        throw new Error(payload.message || (L === "en" ? "Error." : "Eroare."));
 
       updateStatus(
-        payload.message ||
-          (currentLang === "en"
-            ? "Success! We'll get back to you soon."
-            : "Mesaj trimis cu succes. Revenim curând."),
+        payload.message || (L === "en" ? "Message sent!" : "Mesaj trimis!"),
         "success",
       );
-
       form.reset();
       startedAtField.value = String(Date.now());
       (Object.keys(validators) as FieldKey[]).forEach((key) =>
         setFieldError(key, fields[key], ""),
       );
 
-      window.dispatchEvent(
-        new CustomEvent("contact:submitted", {
-          detail: { source: "contact-form" },
-        }),
-      );
-      const dl = (window as any).dataLayer;
-      if (Array.isArray(dl)) dl.push({ event: "contact_form_submit_success" });
-
       setTimeout(() => {
         updateStatus(
-          currentLang === "en"
-            ? "We usually respond within the same business day."
-            : "Răspundem de obicei în aceeași zi lucrătoare.",
+          L === "en" ? "We reply within 24h." : "Răspundem în 24h.",
           "default",
         );
       }, 6000);
     } catch (error) {
-      updateStatus(
-        error instanceof Error
-          ? error.message
-          : currentLang === "en"
-            ? "Error sending."
-            : "Eroare la trimitere.",
-        "error",
-      );
+      updateStatus(error instanceof Error ? error.message : "Error.", "error");
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = originalBtnText;
