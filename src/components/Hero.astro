@@ -44,22 +44,14 @@ const { backgroundImage = "/ffff.jpg" } = Astro.props;
     </p>
 
     <div class="mt-14">
-      <a href="/#contact" class="inline-flex">
-        <button
-          class="group relative overflow-hidden rounded-full px-12 py-4 text-sm font-semibold uppercase tracking-[0.18em]
-          text-amber-100/90 transition-all duration-300
-          border border-amber-200/35 bg-white/3 backdrop-blur-md
-          hover:-translate-y-0.5 hover:border-amber-200/55 hover:bg-white/6
-          hover:shadow-[0_20px_70px_rgba(251,191,36,0.16)]
-          focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-200/50 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent"
-        >
-          <span class="absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100 bg-[radial-gradient(circle_at_30%_30%,rgba(255,220,160,0.22),transparent_55%)]"></span>
-          <span class="relative z-10 flex items-center gap-3">
-            Hai să vorbim
-            <MoveRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
-          </span>
-        </button>
-      </a>
+   <a href="/#contact" class="inline-flex">
+  <button class="btn-one relative h-[50px] w-[260px] text-white uppercase tracking-[0.18em] text-[11px] font-semibold">
+    <span class="relative z-10 flex items-center justify-center gap-3">
+      Hai să vorbim
+      <MoveRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
+    </span>
+  </button>
+</a>
     </div>
   </div>
   
@@ -72,4 +64,49 @@ const { backgroundImage = "/ffff.jpg" } = Astro.props;
       background-attachment: scroll;
     }
   }
+  .btn-one {
+  position: relative;
+  transition: all 0.3s ease;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.15);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+}
+
+.btn-one span {
+  transition: all 0.3s ease;
+}
+
+.btn-one::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: all 0.3s ease;
+  border-top: 1px solid rgba(255,255,255,0.6);
+  border-bottom: 1px solid rgba(255,255,255,0.6);
+  transform: scaleX(0.1);
+}
+
+.btn-one:hover span {
+  letter-spacing: 2px;
+}
+
+.btn-one:hover::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.btn-one::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transition: all 0.3s ease;
+  background-color: rgba(255,255,255,0.06);
+}
+
+.btn-one:hover::after {
+  opacity: 0;
+  transform: scaleX(0.1);
+}
 </style>

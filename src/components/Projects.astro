@@ -46,20 +46,19 @@ const categories = Array.from(
 ).sort((a, b) => a.localeCompare(b, 'ro'));
 ---
 
-<section id="work" data-projects-editorial class="relative w-full overflow-hidden bg-[linear-gradient(180deg,#000000_0%,#08050f_28%,#160a28_62%,#000000_100%)] py-24">
+<section id="work" data-projects-editorial class="relative w-full overflow-hidden bg-[#03060d] py-24">
 
   <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
     <header class="mb-12 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
       <div>
         <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-[0.14em] text-zinc-300">
-          <span class="h-2 w-2 rounded-full bg-[#38bdf8]"></span>
+          <span class="h-2 w-2 rounded-full bg-amber-200/80"></span>
           Project Stories
         </span>
         <h2 class="mt-4 max-w-3xl text-4xl font-extrabold tracking-tight text-white md:text-6xl">
-          O directie editoriala,
-          <span class="text-transparent bg-clip-text bg-linear-to-r from-[#38bdf8] to-[#0052FF]"> cu ritm vizual clar.</span>
+          O direcție editorială,
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-amber-100 to-amber-300/80"> cu ritm vizual clar.</span>
         </h2>
-      
       </div>
 
       <div class="hidden w-fit self-end rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-right backdrop-blur-sm md:block lg:self-auto">
@@ -68,27 +67,27 @@ const categories = Array.from(
       </div>
     </header>
 
-    <div class="rounded-4xl border border-white/10 bg-[#0A0E17]/75 p-5 shadow-2xl shadow-black/40 backdrop-blur-sm md:p-7">
+    <div class="rounded-4xl border border-white/10 bg-white/[0.02] p-5 shadow-2xl shadow-black/40 backdrop-blur-sm md:p-7">
       <div class="mb-5 grid gap-4 lg:grid-cols-[minmax(0,1fr)_auto] lg:items-center">
         <input
           type="text"
           data-project-search
-          placeholder="Cauta proiect dupa nume sau descriere..."
-          class="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white placeholder:text-zinc-500 outline-none transition-all focus:border-[#38bdf8]/40 focus:bg-white/[0.07]"
+          placeholder="Caută proiect după nume sau descriere..."
+          class="h-12 w-full rounded-2xl border border-white/10 bg-white/5 px-4 text-sm text-white placeholder:text-zinc-500 outline-none transition-all focus:border-amber-200/40 focus:bg-white/[0.07]"
         />
 
         <div class="flex h-12 items-center gap-2 rounded-2xl border border-white/10 bg-white/5 px-4 text-[11px] uppercase tracking-[0.14em] text-zinc-300">
           <span>Rezultate</span>
-          <span data-results-count class="font-bold text-[#38bdf8]">{orderedProjects.length}</span>
+          <span data-results-count class="font-bold text-amber-200">{orderedProjects.length}</span>
         </div>
       </div>
 
       <div class="mb-7 flex gap-2 overflow-x-auto no-scrollbar pb-1">
-        <button type="button" data-category-filter="all" class="category-chip is-active shrink-0 h-9 rounded-full border border-[#38bdf8]/35 bg-[#38bdf8]/15 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-[#bae6fd]">
+        <button type="button" data-category-filter="all" class="category-chip is-active shrink-0 h-9 rounded-full border border-amber-200/35 bg-amber-200/15 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-100">
           Toate
         </button>
         {categories.map((category) => (
-          <button type="button" data-category-filter={category} class="category-chip shrink-0 h-9 rounded-full border border-white/10 bg-white/5 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-[#38bdf8]/35 hover:text-[#bae6fd]">
+          <button type="button" data-category-filter={category} class="category-chip shrink-0 h-9 rounded-full border border-white/10 bg-white/5 px-4 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-amber-200/35 hover:text-amber-100">
             {category}
           </button>
         ))}
@@ -109,16 +108,16 @@ const categories = Array.from(
               data-description={(project.description || '').toLowerCase()}
               data-category={category}
               data-side={isReverse ? 'right' : 'left'}
-              class="project-item rounded-3xl border border-white/10 bg-[#0D1322]/80 p-3 md:p-4"
+              class="project-item rounded-3xl border border-white/10 bg-white/[0.03] p-3 md:p-4 hover:border-white/20 transition-colors duration-300"
             >
               <div class={`grid gap-4 md:grid-cols-12 ${isReverse ? 'md:[&>figure]:order-2 md:[&>div]:order-1' : ''}`}>
-                <figure class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-zinc-900 md:col-span-7 md:h-64">
+                <figure class="relative h-52 overflow-hidden rounded-2xl border border-white/10 bg-[#03060d] md:col-span-7 md:h-64">
                   {image ? (
                     <img src={image} alt={project.title} class="h-full w-full object-cover transition-transform duration-700 hover:scale-105" loading="lazy" />
                   ) : (
-                    <div class="flex h-full items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-zinc-600">Fara imagine</div>
+                    <div class="flex h-full items-center justify-center text-xs font-bold uppercase tracking-[0.12em] text-zinc-600">Fără imagine</div>
                   )}
-                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#03060d]/90 via-[#03060d]/20 to-transparent"></div>
                 </figure>
 
                 <div class="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:col-span-5">
@@ -130,8 +129,7 @@ const categories = Array.from(
                       <span class="text-[10px] font-mono uppercase tracking-[0.12em] text-zinc-500">#{(index + 1).toString().padStart(2, '0')}</span>
                     </div>
 
-                    <h3 class="text-2xl font-extrabold tracking-tight text-white line-clamp-2">{project.title}</h3>
-                    <p class="mt-3 line-clamp-4 text-sm leading-relaxed text-[#94a3b8]">{project.description || 'Fara descriere disponibila.'}</p>
+<h3 class="text-[22px] md:text-2xl font-bold text-white/95 drop-shadow-sm leading-snug line-clamp-2">{project.title}</h3>                    <p class="mt-3 line-clamp-4 text-sm leading-relaxed text-white/65">{project.description || 'Fără descriere disponibilă.'}</p>
                   </div>
 
                   <div class="mt-5 flex items-center justify-between">
@@ -142,13 +140,13 @@ const categories = Array.from(
                         href={href}
                         target={external ? '_blank' : undefined}
                         rel={external ? 'noopener noreferrer' : undefined}
-                        class="inline-flex items-center gap-2 rounded-xl bg-[#0052FF] px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-white transition-all hover:bg-[#38bdf8]"
+                        class="inline-flex items-center gap-2 rounded-xl border border-amber-200/35 bg-white/5 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-amber-100/90 transition-all hover:bg-white/10 hover:border-amber-200/55"
                       >
                         Vezi proiect
                         <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 17 17 7"></path><path d="M7 7h10v10"></path></svg>
                       </a>
                     ) : (
-                      <span class="inline-flex rounded-xl border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500">Fara link</span>
+                      <span class="inline-flex rounded-xl border border-white/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-500">Fără link</span>
                     )}
                   </div>
                 </div>
@@ -161,7 +159,7 @@ const categories = Array.from(
           <article
             data-project-placeholder
             data-side={index % 2 === 0 ? 'left' : 'right'}
-            class="project-item project-placeholder is-hidden rounded-3xl border border-white/10 bg-[#0D1322]/60 p-3 md:p-4"
+            class="project-item project-placeholder is-hidden rounded-3xl border border-white/10 bg-white/[0.02] p-3 md:p-4"
             aria-hidden="true"
           >
             <div class="grid gap-4 md:grid-cols-12">
@@ -171,14 +169,14 @@ const categories = Array.from(
 
               <div class="flex flex-col justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:col-span-5">
                 <div>
-                  <div class="mb-3 h-6 w-24 rounded-full skeleton-line"></div>
-                  <div class="h-8 w-3/4 rounded-md skeleton-line"></div>
-                  <div class="mt-3 h-4 w-full rounded-md skeleton-line"></div>
-                  <div class="mt-2 h-4 w-5/6 rounded-md skeleton-line"></div>
-                  <div class="mt-2 h-4 w-2/3 rounded-md skeleton-line"></div>
+                  <div class="mb-3 h-6 w-24 rounded-full skeleton-line bg-white/5"></div>
+                  <div class="h-8 w-3/4 rounded-md skeleton-line bg-white/5"></div>
+                  <div class="mt-3 h-4 w-full rounded-md skeleton-line bg-white/5"></div>
+                  <div class="mt-2 h-4 w-5/6 rounded-md skeleton-line bg-white/5"></div>
+                  <div class="mt-2 h-4 w-2/3 rounded-md skeleton-line bg-white/5"></div>
                 </div>
 
-                <div class="mt-5 h-9 w-28 rounded-xl skeleton-line"></div>
+                <div class="mt-5 h-9 w-28 rounded-xl skeleton-line bg-white/5"></div>
               </div>
             </div>
           </article>
@@ -188,17 +186,17 @@ const categories = Array.from(
       <div class="mt-7 flex flex-col gap-3 border-t border-white/10 pt-5 sm:flex-row sm:items-center sm:justify-between">
         <p data-page-label class="text-xs uppercase tracking-[0.14em] text-zinc-400">Pagina 1 din 1</p>
         <div class="flex w-full items-center gap-2 sm:w-auto">
-          <button type="button" data-page-prev class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-[#38bdf8]/35 hover:text-[#bae6fd] disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
-            Inapoi
+          <button type="button" data-page-prev class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-amber-200/35 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
+            Înapoi
           </button>
-          <button type="button" data-page-next class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-[#38bdf8]/35 hover:text-[#bae6fd] disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
-            Inainte
+          <button type="button" data-page-next class="h-10 flex-1 rounded-xl border border-white/10 bg-white/5 px-5 text-[10px] font-bold uppercase tracking-[0.12em] text-zinc-300 transition-all hover:border-amber-200/35 hover:text-amber-100 disabled:cursor-not-allowed disabled:opacity-40 sm:flex-none">
+            Înainte
           </button>
         </div>
       </div>
 
       <div data-empty-state class="hidden mt-5 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-8 text-center text-sm text-zinc-400">
-        Nu am gasit proiecte pentru filtrul curent.
+        Nu am găsit proiecte pentru filtrul curent.
       </div>
     </div>
   </div>

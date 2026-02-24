@@ -1,5 +1,10 @@
-.no-scrollbar::-webkit-scrollbar { display: none; }
-.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 
 .project-item.is-hidden {
   display: none;
@@ -10,7 +15,12 @@
 }
 
 .skeleton-line {
-  background: linear-gradient(100deg, rgba(30, 41, 59, 0.9) 25%, rgba(56, 189, 248, 0.12) 50%, rgba(30, 41, 59, 0.9) 75%);
+  background: linear-gradient(
+    100deg,
+    rgba(255, 255, 255, 0.02) 25%,
+    rgba(253, 230, 138, 0.1) 50%,
+    rgba(255, 255, 255, 0.02) 75%
+  );
   background-size: 220% 100%;
   animation: skeletonShimmer 1.2s ease-in-out infinite;
 }
@@ -18,16 +28,18 @@
 .project-item {
   opacity: 1;
   transform: translateX(0);
-  transition: opacity 480ms cubic-bezier(0.22, 1, 0.36, 1), transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 480ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 480ms cubic-bezier(0.22, 1, 0.36, 1);
   will-change: opacity, transform;
 }
 
-.project-item.is-entering[data-side='left'] {
+.project-item.is-entering[data-side="left"] {
   opacity: 0;
   transform: translateX(-22px);
 }
 
-.project-item.is-entering[data-side='right'] {
+.project-item.is-entering[data-side="right"] {
   opacity: 0;
   transform: translateX(22px);
 }
@@ -41,20 +53,30 @@
 }
 
 [data-project-list].is-booting .project-item:not(.is-hidden)::before {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 1.25rem;
-  background: linear-gradient(90deg, rgba(15, 23, 42, 0.95) 0%, rgba(30, 41, 59, 0.9) 50%, rgba(15, 23, 42, 0.95) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.02) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0.02) 100%
+  );
   z-index: 2;
 }
 
 [data-project-list].is-booting .project-item:not(.is-hidden)::after {
-  content: '';
+  content: "";
   position: absolute;
   inset: 0;
   border-radius: 1.25rem;
-  background: linear-gradient(110deg, transparent 25%, rgba(56, 189, 248, 0.16) 50%, transparent 75%);
+  background: linear-gradient(
+    110deg,
+    transparent 25%,
+    rgba(253, 230, 138, 0.15) 50%,
+    transparent 75%
+  );
   transform: translateX(-120%);
   animation: projectSkeletonSweep 1.15s ease-in-out infinite;
   z-index: 3;
@@ -75,7 +97,9 @@
 [data-project-list] {
   opacity: 1;
   transform: translateY(0);
-  transition: opacity 320ms cubic-bezier(0.22, 1, 0.36, 1), transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition:
+    opacity 320ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 320ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 [data-project-list].is-switching {
@@ -84,17 +108,30 @@
 }
 
 .category-chip.is-active {
-  border-color: rgba(56, 189, 248, 0.45);
-  background: rgba(56, 189, 248, 0.15);
-  color: rgb(186, 230, 253);
+  border-color: rgba(253, 230, 138, 0.45);
+  background: rgba(253, 230, 138, 0.15);
+  color: rgb(254, 243, 199);
+}
+
+.project-item h3 {
+  transition:
+    color 0.3s ease,
+    text-shadow 0.3s ease,
+    transform 0.3s ease;
+}
+
+.project-item:hover h3 {
+  color: #fef3c7;
+  text-shadow: 0 0 15px rgba(253, 230, 138, 0.3);
+  transform: translateX(4px);
 }
 
 @media (max-width: 767px) {
-  .project-item.is-entering[data-side='left'] {
+  .project-item.is-entering[data-side="left"] {
     transform: translateX(-14px);
   }
 
-  .project-item.is-entering[data-side='right'] {
+  .project-item.is-entering[data-side="right"] {
     transform: translateX(14px);
   }
 }
@@ -103,7 +140,8 @@
   .project-item,
   [data-project-list],
   [data-project-list].is-booting .project-item:not(.is-hidden)::after,
-  .skeleton-line {
+  .skeleton-line,
+  .project-item h3 {
     transition: none !important;
     animation: none !important;
   }
