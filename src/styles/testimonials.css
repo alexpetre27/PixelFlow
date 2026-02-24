@@ -50,7 +50,7 @@
 [data-testimonials-carousel].is-ready [data-testimonial-item].is-active {
   opacity: 1;
   transform: none;
-  border-color: rgba(56, 189, 248, 0.35);
+  border-color: rgba(253, 230, 138, 0.35);
   box-shadow: 0 14px 30px rgba(0, 0, 0, 0.32);
 }
 
@@ -67,9 +67,13 @@
 }
 
 [data-testimonials-dot].is-active {
-  background: linear-gradient(90deg, rgba(56, 189, 248, 0.95), rgba(0, 82, 255, 0.9));
+  background: linear-gradient(
+    90deg,
+    rgba(254, 243, 199, 0.95),
+    rgba(253, 230, 138, 0.9)
+  );
   transform: scale(1.35);
-  box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.14);
+  box-shadow: 0 0 0 4px rgba(253, 230, 138, 0.14);
 }
 
 [data-testimonials-prev]:disabled,
