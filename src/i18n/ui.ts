@@ -1,8 +1,10 @@
 export const ui = {
   ro: {
+    "hero.subtitle": "Dar câți se opresc să cumpere?",
     "hero.badge": "STRATEGIE • DESIGN • CONVERSIE",
     "hero.title": "Ai trafic.",
-    "hero.subtitle": "Dar câți se opresc să cumpere?",
+    "hero.subtitle.1": "Dar câți se opresc să ",
+    "hero.subtitle.2": "cumpere?",
     "hero.highlight": "Transformăm traficul anonim în clienți reali.",
     "hero.desc":
       "Mii de oameni trec zilnic pe lângă afacerea ta online. Construim experiențe care îi fac să se oprească, să înțeleagă și să acționeze.",
@@ -91,9 +93,16 @@ export const ui = {
     "footer.legal.privacy": "Politica de Confidențialitate",
     "footer.legal.cookies": "Politica de Cookies",
     "footer.rights": "Toate drepturile rezervate.",
+    "cookie.title": "Respectăm intimitatea ta",
+    "cookie.desc":
+      "Folosim cookie-uri pentru a-ți oferi cea mai bună experiență pe site, pentru a analiza traficul și pentru a personaliza conținutul. Poți accepta toate cookie-urile sau doar pe cele esențiale.",
+    "cookie.accept": "Acceptă toate",
+    "cookie.reject": "Doar esențiale",
   },
   en: {
     "hero.badge": "STRATEGY • DESIGN • CONVERSION",
+    "hero.subtitle.1": "But how many actually ",
+    "hero.subtitle.2": "buy?",
     "hero.title": "You have traffic.",
     "hero.subtitle": "But how many actually buy?",
     "hero.highlight": "We turn anonymous traffic into paying customers.",
@@ -184,5 +193,10 @@ export const ui = {
     "footer.legal.privacy": "Privacy Policy",
     "footer.legal.cookies": "Cookie Policy",
     "footer.rights": "All rights reserved.",
+    "cookie.title": "We value your privacy",
+    "cookie.desc":
+      "We use cookies to enhance your browsing experience, analyze our traffic, and serve personalized content. You can choose to accept all cookies or only the essential ones.",
+    "cookie.accept": "Accept All",
+    "cookie.reject": "Essentials Only",
   },
 } as const;
