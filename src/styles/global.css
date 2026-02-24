@@ -10,8 +10,46 @@ body {
   color: var(--foreground);
   overflow-y: scroll;
   overflow-x: hidden;
+  @apply font-sans;
+  background: #05060a;
+  color: rgba(255, 255, 255, 0.9);
 }
 html {
   scrollbar-gutter: stable;
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    "Segoe UI",
+    Roboto,
+    Helvetica,
+    Arial,
+    sans-serif;
+  text-rendering: geometricPrecision;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   scroll-behavior: smooth;
+}
+:root {
+  --glass: rgba(9, 9, 11, 0.4);
+  --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+.glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.nav-label {
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 800;
+  font-size: 10px;
+}
+
+.heading-tight {
+  letter-spacing: -0.03em;
 }
