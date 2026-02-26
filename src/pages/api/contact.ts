@@ -58,6 +58,7 @@ const buildHtml = (
 export const GET: APIRoute = async () => {
   const required = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"];
   const missing = required.filter((key) => !getEnv(key));
+  console.log("[API GET] Verificare variabile mediu. Lipsesc:", missing);
   return new Response(JSON.stringify({ ok: missing.length === 0, missing }), {
     status: missing.length === 0 ? 200 : 503,
     headers: { "Content-Type": "application/json" },
@@ -65,9 +66,12 @@ export const GET: APIRoute = async () => {
 };
 
 export const POST: APIRoute = async ({ request }) => {
+  const ip = getClientIp(request);
+  console.log(`[API POST] Cerere primită de la IP: ${ip}`);
+
   try {
-    const ip = getClientIp(request);
     if (isRateLimited(ip)) {
+      console.warn(`[API POST] Rate limit activat pentru IP: ${ip}`);
       return new Response(
         JSON.stringify({ message: "Prea multe încercări." }),
         { status: 429 },
@@ -75,23 +79,36 @@ export const POST: APIRoute = async ({ request }) => {
     }
 
     const body = await request.json();
+    console.log("[API POST] Body recepționat:", body);
+
     const name = String(body?.name ?? "").trim();
     const email = String(body?.email ?? "").trim();
     const message = String(body?.message ?? "").trim();
     const honeypot = String(body?.honeypot ?? "").trim();
     const startedAt = Number(body?.startedAt ?? 0);
 
-    if (
-      honeypot.length > 0 ||
-      !Number.isFinite(startedAt) ||
-      Date.now() - startedAt < MIN_FILL_TIME_MS
-    ) {
+    // Validări securitate
+    if (honeypot.length > 0) {
+      console.error("[API POST] Honeypot detectat! Valoare:", honeypot);
       return new Response(JSON.stringify({ message: "Cerere invalidă." }), {
         status: 400,
       });
     }
 
+    const timeDiff = Date.now() - startedAt;
+    if (
+      !Number.isFinite(startedAt) ||
+      startedAt === 0 ||
+      timeDiff < MIN_FILL_TIME_MS
+    ) {
+      console.error(`[API POST] Timp de completare prea scurt: ${timeDiff}ms`);
+      return new Response(JSON.stringify({ message: "Ești robot?" }), {
+        status: 400,
+      });
+    }
+
     if (name.length < 2 || !isValidEmail(email) || message.length < 10) {
+      console.error("[API POST] Validare câmpuri eșuată.");
       return new Response(JSON.stringify({ message: "Date incomplete." }), {
         status: 400,
       });
@@ -99,21 +116,26 @@ export const POST: APIRoute = async ({ request }) => {
 
     const config = {
       host: getEnv("SMTP_HOST"),
-      port: Number(getEnv("SMTP_PORT") || "587"),
+      port: Number(getEnv("SMTP_PORT") || "465"),
       user: getEnv("SMTP_USER"),
-      pass: getEnv("SMTP_PASS"),
+      pass: getEnv("SMTP_PASS") ? "***" : "LIPSEȘTE",
       from: getEnv("CONTACT_FROM") || getEnv("SMTP_USER"),
       to: getEnv("CONTACT_TO") || getEnv("SMTP_USER"),
-      backup: getEnv("CONTACT_TO_BACKUP"),
     };
 
+    console.log("[API POST] Configurație SMTP (fără pass):", { ...config });
+
     const transporter = nodemailer.createTransport({
-      host: config.host,
-      port: config.port,
-      secure: config.port === 465,
-      auth: { user: config.user, pass: config.pass },
+      host: getEnv("SMTP_HOST"),
+      port: Number(getEnv("SMTP_PORT") || "465"),
+      secure: Number(getEnv("SMTP_PORT")) === 465,
+      auth: { user: getEnv("SMTP_USER"), pass: getEnv("SMTP_PASS") },
       tls: { rejectUnauthorized: false },
     });
+
+    console.log("[API POST] Se verifică conexiunea SMTP...");
+    await transporter.verify();
+    console.log("[API POST] Server SMTP gata de trimitere.");
 
     const mailPayload = {
       from: `Pixelflow Studio <${config.from}>`,
@@ -129,22 +151,25 @@ export const POST: APIRoute = async ({ request }) => {
       ),
     };
 
-    try {
-      await transporter.sendMail(mailPayload);
-    } catch (err) {
-      if (config.backup) {
-        await transporter.sendMail({ ...mailPayload, to: config.backup });
-      } else {
-        throw err;
-      }
-    }
+    console.log("[API POST] Se trimite mail-ul...");
+    const info = await transporter.sendMail(mailPayload);
+    console.log("[API POST] Succes! ID Mesaj:", info.messageId);
 
     return new Response(JSON.stringify({ message: "Mesaj trimis!" }), {
       status: 200,
     });
-  } catch (error) {
-    return new Response(JSON.stringify({ message: "Eroare server." }), {
-      status: 500,
-    });
+  } catch (error: any) {
+    console.error("[API POST] EROARE:");
+    console.error("- Mesaj:", error.message);
+    console.error("- Cod:", error.code);
+    console.error("- Stack:", error.stack);
+
+    return new Response(
+      JSON.stringify({
+        message: "Eroare server.",
+        debug: error.message,
+      }),
+      { status: 500 },
+    );
   }
 };

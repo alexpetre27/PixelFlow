@@ -1,16 +1,16 @@
 ---
 import Navbar from '@/components/Navbar.astro';
-import Footer from '@/components/Footer.astro';
 import '../styles/global.css';
 import CookieBanner from '@/components/CookieBanner.astro';
 const { lang = 'ro' } = Astro.props;
-const { title = 'Pixelflow Studio' } = Astro.props as { title?: string };
+const { title = 'Pixelflow' } = Astro.props as { title?: string };
 ---
 <!doctype html>
-<html lang="ro">
+<html lang={lang}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
 		<title>{title}</title>
 	</head>
 	<body class="bg-black">
