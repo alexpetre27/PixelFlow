@@ -1,7 +1,7 @@
 ﻿---
 import '@/styles/projects.css';
 import projectScriptUrl from '@/scripts/project.ts?url';
-import { ui } from '@/i18n/ui';
+import { ui, projectTranslations } from '@/i18n/ui';
 
 interface Project {
   title: string;
@@ -9,7 +9,7 @@ interface Project {
   description?: any;
   image?: any;
   imageUrl?: string;
-  slug?: any;
+  slug?: { current: string };
   link?: string;
   github?: string;
 }
@@ -76,19 +76,28 @@ const categories = Array.from(new Set(orderedProjects.map(p => (p.category || 'G
           const title = project.title || "Project";
           const category = (project.category || 'General').trim();
           const isReverse = index % 2 !== 0;
+
+          // --- LOGICA DE IDENTIFICARE (Folosim Slug SAU Titlu) ---
+          const identifier = project.slug?.current || project.title || "";
           
-          let description = "";
-          if (typeof project.description === 'string') {
-            description = project.description;
-          } else if (Array.isArray(project.description)) {
-            description = project.description.map((b: any) => b.children?.map((c: any) => c.text).join('')).join(' ');
+          // --- LOGICA DE TRADUCERE ---
+          // Prioritate 1: Căutăm în projectTranslations din ui.ts folosind Titlul/Slug-ul exact
+          let description = projectTranslations[identifier]?.[lang];
+
+          // Prioritate 2: Dacă nu găsim în fișier, luăm descrierea brută din Sanity (fallback pe EN)
+          if (!description) {
+            if (typeof project.description === 'string') {
+              description = project.description;
+            } else if (Array.isArray(project.description)) {
+              description = project.description.map((b: any) => b.children?.map((c: any) => c.text).join('')).join(' ');
+            }
           }
 
           return (
             <article 
               data-project-item 
               data-title={title.toLowerCase()} 
-              data-description={description.toLowerCase()} 
+              data-description={(description || "").toLowerCase()} 
               data-category={category} 
               data-side={isReverse ? 'right' : 'left'}
               class="project-item rounded-3xl border border-white/10 bg-[#0D1322]/80 p-3 md:p-4 hover:border-white/20 transition-all duration-300"
@@ -110,7 +119,9 @@ const categories = Array.from(new Set(orderedProjects.map(p => (p.category || 'G
                       <span class="text-[10px] font-mono uppercase tracking-[0.12em] text-zinc-500">#{(index + 1).toString().padStart(2, '0')}</span>
                     </div>
                     <h3 class="text-2xl font-black text-white tracking-tight uppercase line-clamp-2">{title}</h3>
-                    <p class="mt-3 text-sm leading-relaxed text-[#94a3b8] line-clamp-4">{description || t['work.no_desc']}</p>
+                    <p class="mt-3 text-sm leading-relaxed text-[#94a3b8] line-clamp-4">
+                        {description || t['work.no_desc']}
+                    </p>
                   </div>
 
                   <div class="mt-5 flex items-center justify-between">
@@ -126,6 +137,7 @@ const categories = Array.from(new Set(orderedProjects.map(p => (p.category || 'G
           );
         })}
 
+        {/* State-ul pentru placeholders */}
         {Array.from({ length: 3 }).map((_, index) => (
           <article 
             data-project-placeholder 

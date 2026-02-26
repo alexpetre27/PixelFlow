@@ -200,3 +200,17 @@ export const ui = {
     "cookie.reject": "Essentials Only",
   },
 } as const;
+export const projectTranslations: Record<string, any> = {
+  MicroManager: {
+    ro: "Platformă administrativă enterprise pentru monitorizarea în timp real a microserviciilor și gestionarea structurată a resurselor organizaționale. Dezvoltată pe o arhitectură complet decuplată, asigurând scalabilitate maximă.",
+    en: "Developed a comprehensive enterprise-grade administrative platform designed for real-time monitoring of microservices and structured management of organizational resources.",
+  },
+  StockTracker: {
+    ro: "Aplicație web performantă pentru monitorizarea și analiza a 10 active bursiere în timp real. Sistemul preia date live din piață și generează indicatori vizuali pentru schimbările de preț și tendințele economice.",
+    en: "StockTracker is a web application designed to monitor and analyze the performance of 10 selected stock market assets in real time.",
+  },
+  BudgetTracker: {
+    ro: "Soluție full-stack modernă pentru managementul finanțelor personale. Oferă o interfață intuitivă pentru înregistrarea, categorisirea și monitorizarea veniturilor și cheltuielilor, facilitând controlul financiar.",
+    en: "This is a modern, full-stack Budget Tracker app designed for personal finance management.",
+  },
+};
