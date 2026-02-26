@@ -1,6 +1,5 @@
 ﻿---
 import '@/styles/testimonials.css';
-import testimonialsScriptUrl from '@/scripts/testimonials.ts?url';
 import { testimonialsData } from '@/data/testimonials'; 
 import { ui } from '@/i18n/ui';
 
@@ -9,53 +8,116 @@ const t = ui[lang as keyof typeof ui];
 const testimonials = testimonialsData[lang as keyof typeof testimonialsData];
 ---
 
-<section id="testimonials" class="relative w-full overflow-visible bg-[#03060d] py-24">
+<section id="testimonials" class="relative w-full overflow-hidden bg-[#03060d] py-24">
   <div class="relative z-10 mx-auto w-full max-w-7xl px-6">
     <div class="mb-14 flex flex-col items-center text-center space-y-4">
       <span class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-[12px] font-bold uppercase tracking-widest text-zinc-300 backdrop-blur-sm">
         <span class="h-2 w-2 rounded-full bg-amber-200/80"></span>
         {t['test.badge']}
       </span>
-      <h2 class="text-3xl md:text-5xl font-extrabold tracking-tight text-white">
-        {t['test.title.1']}
-        <span class="text-transparent bg-clip-text bg-linear-to-r from-amber-100 to-amber-300/80">{t['test.title.2']}</span>
+      <h2 class="text-3xl md:text-5xl font-extrabold text-white">
+        {t['test.title.1']} <span class="text-transparent bg-clip-text bg-linear-to-r from-amber-100 to-amber-300/80">{t['test.title.2']}</span>
       </h2>
-      <p class="max-w-2xl text-lg font-light text-white/65">
-        {t['test.desc']}
-      </p>
+      <p class="max-w-2xl text-lg font-light text-white/65">{t['test.desc']}</p>
     </div>
 
-    <div data-testimonials-carousel class="relative mt-12 md:mt-14">
-      <button type="button" data-testimonials-prev aria-label="Prev" class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur-sm transition-all hover:border-amber-200/40 hover:text-amber-200">‹</button>
-      <button type="button" data-testimonials-next aria-label="Next" class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur-sm transition-all hover:border-amber-200/40 hover:text-amber-200">›</button>
+    <div data-testimonials-carousel class="relative mt-12">
+      <button type="button" data-testimonials-prev class="hidden md:flex absolute -left-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur-sm transition-all hover:text-amber-200">‹</button>
+      <button type="button" data-testimonials-next class="hidden md:flex absolute -right-4 top-1/2 -translate-y-1/2 z-20 h-11 w-11 items-center justify-center rounded-full border border-white/15 bg-black/35 text-white backdrop-blur-sm transition-all hover:text-amber-200">›</button>
 
-      <div data-testimonials-track class="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar px-1 py-2 md:px-8">
+      <div data-testimonials-track class="flex gap-4 overflow-x-auto snap-x snap-mandatory no-scrollbar px-4 py-4">
         {testimonials.map((item, index) => (
-          <article data-testimonial-item data-index={index} class="testimonial-card group min-w-[92%] sm:min-w-[72%] md:min-w-[52%] lg:min-w-[38%] xl:min-w-[34%] snap-center relative rounded-4xl border border-white/10 bg-white/2 p-7 backdrop-blur-sm hover:-translate-y-0.5 hover:bg-white/4 hover:border-amber-200/35 shadow-xl shadow-black/40 transition-all duration-300">
-            <div class="absolute inset-0 rounded-4xl bg-linear-to-br from-amber-200/10 via-transparent to-transparent opacity-0 transition-opacity duration-700 ease-out group-hover:opacity-100 pointer-events-none"></div>
-            <div class="relative z-10">
-              <div class="mb-5 flex items-center gap-1 text-amber-400">
-                {Array.from({ length: item.rating }).map(() => (
-                  <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z"></path></svg>
-                ))}
-              </div>
-              <blockquote class="text-sm leading-relaxed text-white/70">"{item.quote}"</blockquote>
-              <footer class="mt-6 border-t border-white/10 pt-4">
-                <p class="text-white font-bold tracking-tight">{item.name}</p>
-                <p class="text-xs uppercase tracking-[0.12em] text-zinc-400">{item.role} - {item.company}</p>
-              </footer>
+          <article data-testimonial-item class="snap-center relative min-w-[90%] md:min-w-[45%] lg:min-w-[30%] rounded-4xl border border-white/10 bg-white/2 p-7 backdrop-blur-sm transition-all duration-300">
+            <div class="mb-5 flex gap-1 text-amber-400">
+              {Array.from({ length: item.rating }).map(() => (
+                <svg class="h-4 w-4 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 0 0 .95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 0 0-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 0 0-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 0 0-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 0 0 .951-.69l1.07-3.292z"></path></svg>
+              ))}
             </div>
+            <blockquote class="text-sm leading-relaxed text-white/70 italic">"{item.quote}"</blockquote>
+            <footer class="mt-6 border-t border-white/10 pt-4">
+              <p class="text-white font-bold">{item.name}</p>
+              <p class="text-[10px] uppercase tracking-widest text-zinc-500">{item.role} @ {item.company}</p>
+            </footer>
           </article>
         ))}
       </div>
 
-      <div data-testimonials-dots class="mt-5 flex items-center justify-center gap-2">
-        {testimonials.map((_, index) => (
-          <button type="button" data-testimonials-dot data-index={index} class="h-2 w-2 rounded-full bg-white/20 transition-all hover:bg-amber-200"></button>
+      <div data-testimonials-dots class="mt-8 flex items-center justify-center gap-2">
+        {testimonials.map((_, i) => (
+          <button type="button" data-testimonials-dot class="h-2 w-2 rounded-full bg-white/20 transition-all"></button>
         ))}
       </div>
     </div>
   </div>
 </section>
 
-<script type="module" src={testimonialsScriptUrl}></script>
+<script>
+  function initCarousel() {
+    const carousels = document.querySelectorAll("[data-testimonials-carousel]");
+    
+    carousels.forEach(root => {
+      const host = root as HTMLElement;
+      if (host.dataset.testimonialsInit === "true") return;
+
+      const track = host.querySelector<HTMLElement>("[data-testimonials-track]");
+      const items = Array.from(host.querySelectorAll<HTMLElement>("[data-testimonial-item]"));
+      const dots = Array.from(host.querySelectorAll<HTMLButtonElement>("[data-testimonials-dot]"));
+      const prevBtn = host.querySelector<HTMLButtonElement>("[data-testimonials-prev]");
+      const nextBtn = host.querySelector<HTMLButtonElement>("[data-testimonials-next]");
+
+      if (!track || items.length === 0) return;
+      host.dataset.testimonialsInit = "true";
+
+      let currentIndex = 0;
+      let isMoving = false;
+
+      const setActive = (index: number) => {
+        currentIndex = index;
+        items.forEach((item, i) => item.classList.toggle("is-active", i === index));
+        dots.forEach((dot, i) => dot.classList.toggle("is-active", i === index));
+      };
+
+      const sync = () => {
+        if (isMoving) return;
+        const scrollLeft = Math.round(track.scrollLeft);
+        const maxScroll = track.scrollWidth - track.clientWidth;
+
+        if (scrollLeft <= 15) { setActive(0); return; }
+        if (scrollLeft >= maxScroll - 15) { setActive(items.length - 1); return; }
+
+        const center = scrollLeft + track.clientWidth / 2;
+        let closest = 0;
+        let minDiff = Number.MAX_VALUE;
+
+        items.forEach((item, i) => {
+          const diff = Math.abs((item.offsetLeft + item.clientWidth / 2) - center);
+          if (diff < minDiff) { minDiff = diff; closest = i; }
+        });
+        setActive(closest);
+      };
+
+      const scrollTo = (index: number) => {
+        const target = (index + items.length) % items.length;
+        const item = items[target];
+        isMoving = true;
+        track.scrollTo({ 
+          left: item.offsetLeft - (track.clientWidth - item.clientWidth) / 2, 
+          behavior: "smooth" 
+        });
+        setActive(target);
+        setTimeout(() => isMoving = false, 500);
+      };
+
+      track.addEventListener("scroll", () => requestAnimationFrame(sync), { passive: true });
+      prevBtn?.addEventListener("click", () => scrollTo(currentIndex - 1));
+      nextBtn?.addEventListener("click", () => scrollTo(currentIndex + 1));
+      dots.forEach((dot, i) => dot.addEventListener("click", () => scrollTo(i)));
+
+      setTimeout(() => setActive(0), 100);
+    });
+  }
+
+  initCarousel();
+  
+  document.addEventListener("astro:after-swap", initCarousel);
+</script>
