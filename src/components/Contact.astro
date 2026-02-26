@@ -125,8 +125,9 @@ const SITE_KEY = '0x4AAAAAACixDz2zMSFVWeZC';
             <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider ml-1 mt-1 hidden" data-contact-error-for="message"></span>
           </label>
 
-          <div class="cf-turnstile" data-sitekey={SITE_KEY} data-theme="dark"></div>
-
+<div class="flex justify-center w-full py-2">
+    <div class="cf-turnstile" data-sitekey={SITE_KEY} data-theme="dark"></div>
+</div>
           <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-white/5 pt-6">
             <p data-contact-status class="text-[11px] font-bold uppercase tracking-widest text-zinc-500 transition-colors">
               {lang === 'ro' ? 'Răspundem în maximum 24h.' : 'We reply within 24 hours.'}
