@@ -1,41 +1,31 @@
 ﻿import type { APIRoute } from "astro";
 import nodemailer from "nodemailer";
 
+const getEnv = (name: string) => (import.meta.env[name] || "").trim();
+
 const isValidEmail = (value: string) =>
   /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
 
-const getEnv = (name: string) => {
-  const value = import.meta.env[name];
-  return typeof value === "string" ? value.trim() : String(value || "");
-};
+async function verifyTurnstile(token: string) {
+  const secret = getEnv("TURNSTILE_SECRET_KEY");
+  if (!secret) return true;
+  if (!token) return false;
 
-const MAX_REQUESTS = 5;
-const RATE_LIMIT_WINDOW_MS = 10 * 60 * 1000;
-const MIN_FILL_TIME_MS = 2500;
-
-const requestStore = new Map<string, number[]>();
-
-const getClientIp = (request: Request) => {
-  const forwardedFor = request.headers.get("x-forwarded-for");
-  if (forwardedFor) {
-    return forwardedFor.split(",")[0].trim();
+  try {
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: `secret=${secret}&response=${token}`,
+      },
+    );
+    const data = await res.json();
+    return data.success;
+  } catch {
+    return false;
   }
-  return request.headers.get("x-real-ip")?.trim() || "unknown";
-};
-
-const isRateLimited = (ip: string) => {
-  const now = Date.now();
-  const requests = (requestStore.get(ip) || []).filter(
-    (time) => now - time < RATE_LIMIT_WINDOW_MS,
-  );
-  if (requests.length >= MAX_REQUESTS) {
-    requestStore.set(ip, requests);
-    return true;
-  }
-  requests.push(now);
-  requestStore.set(ip, requests);
-  return false;
-};
+}
 
 const buildHtml = (
   name: string,
@@ -44,132 +34,79 @@ const buildHtml = (
   budget: string,
   message: string,
 ) => `
-  <div style="font-family: sans-serif; line-height: 1.5; color: #333;">
-    <h2 style="border-bottom: 1px solid #eee; padding-bottom: 10px;">Cerere nouă proiect</h2>
-    <p><strong>Nume:</strong> ${name}</p>
-    <p><strong>Email:</strong> ${email}</p>
-    <p><strong>Companie:</strong> ${company || "-"}</p>
-    <p><strong>Buget:</strong> ${budget || "-"}</p>
-    <p><strong>Mesaj:</strong></p>
-    <div style="background: #f9f9f9; padding: 15px; border-radius: 5px;">${message.replace(/\n/g, "<br/>")}</div>
+  <div style="font-family: sans-serif; line-height: 1.6; color: #1a1a1a; max-width: 600px; border: 1px solid #eee; padding: 20px; border-radius: 10px;">
+    <h2 style="color: #d97706; border-bottom: 2px solid #f3f4f6; padding-bottom: 10px; margin-top: 0;">Lead Nou: ${name}</h2>
+    <p><strong>Email:</strong> <a href="mailto:${email}" style="color: #d97706;">${email}</a></p>
+    <p><strong>Companie:</strong> ${company || "Nespecificat"}</p>
+    <p><strong>Buget:</strong> ${budget || "Nespecificat"}</p>
+    <div style="margin-top: 20px; padding: 15px; background: #f9fafb; border-left: 4px solid #d97706; border-radius: 4px;">
+      <p style="margin: 0 0 10px 0;"><strong>Mesaj:</strong></p>
+      <p style="white-space: pre-wrap; margin: 0;">${message}</p>
+    </div>
   </div>
 `;
 
-export const GET: APIRoute = async () => {
-  const required = ["SMTP_HOST", "SMTP_PORT", "SMTP_USER", "SMTP_PASS"];
-  const missing = required.filter((key) => !getEnv(key));
-  console.log("[API GET] Verificare variabile mediu. Lipsesc:", missing);
-  return new Response(JSON.stringify({ ok: missing.length === 0, missing }), {
-    status: missing.length === 0 ? 200 : 503,
-    headers: { "Content-Type": "application/json" },
-  });
-};
-
 export const POST: APIRoute = async ({ request }) => {
-  const ip = getClientIp(request);
-  console.log(`[API POST] Cerere primită de la IP: ${ip}`);
-
   try {
-    if (isRateLimited(ip)) {
-      console.warn(`[API POST] Rate limit activat pentru IP: ${ip}`);
+    const body = await request.json();
+    const { name, email, message, company, budget, honeypot, startedAt } = body;
+    const turnstileToken = body["cf-turnstile-response"];
+
+    if (!(await verifyTurnstile(turnstileToken))) {
       return new Response(
-        JSON.stringify({ message: "Prea multe încercări." }),
-        { status: 429 },
+        JSON.stringify({ message: "Security check failed." }),
+        { status: 400 },
       );
     }
 
-    const body = await request.json();
-    console.log("[API POST] Body recepționat:", body);
-
-    const name = String(body?.name ?? "").trim();
-    const email = String(body?.email ?? "").trim();
-    const message = String(body?.message ?? "").trim();
-    const honeypot = String(body?.honeypot ?? "").trim();
-    const startedAt = Number(body?.startedAt ?? 0);
-
-    // Validări securitate
-    if (honeypot.length > 0) {
-      console.error("[API POST] Honeypot detectat! Valoare:", honeypot);
-      return new Response(JSON.stringify({ message: "Cerere invalidă." }), {
+    if (honeypot || Date.now() - Number(startedAt || 0) < 2000) {
+      return new Response(JSON.stringify({ message: "Bot detected." }), {
         status: 400,
       });
     }
 
-    const timeDiff = Date.now() - startedAt;
     if (
-      !Number.isFinite(startedAt) ||
-      startedAt === 0 ||
-      timeDiff < MIN_FILL_TIME_MS
+      !name ||
+      name.length < 2 ||
+      !isValidEmail(email) ||
+      !message ||
+      message.length < 10
     ) {
-      console.error(`[API POST] Timp de completare prea scurt: ${timeDiff}ms`);
-      return new Response(JSON.stringify({ message: "Ești robot?" }), {
+      return new Response(JSON.stringify({ message: "Invalid data." }), {
         status: 400,
       });
     }
 
-    if (name.length < 2 || !isValidEmail(email) || message.length < 10) {
-      console.error("[API POST] Validare câmpuri eșuată.");
-      return new Response(JSON.stringify({ message: "Date incomplete." }), {
-        status: 400,
-      });
-    }
-
-    const config = {
-      host: getEnv("SMTP_HOST"),
-      port: Number(getEnv("SMTP_PORT") || "465"),
-      user: getEnv("SMTP_USER"),
-      pass: getEnv("SMTP_PASS") ? "***" : "LIPSEȘTE",
-      from: getEnv("CONTACT_FROM") || getEnv("SMTP_USER"),
-      to: getEnv("CONTACT_TO") || getEnv("SMTP_USER"),
-    };
-
-    console.log("[API POST] Configurație SMTP (fără pass):", { ...config });
-
+    const smtpPort = Number(getEnv("SMTP_PORT") || "465");
     const transporter = nodemailer.createTransport({
       host: getEnv("SMTP_HOST"),
-      port: Number(getEnv("SMTP_PORT") || "465"),
-      secure: Number(getEnv("SMTP_PORT")) === 465,
+      port: smtpPort,
+      secure: smtpPort === 465,
       auth: { user: getEnv("SMTP_USER"), pass: getEnv("SMTP_PASS") },
       tls: { rejectUnauthorized: false },
     });
 
-    console.log("[API POST] Se verifică conexiunea SMTP...");
-    await transporter.verify();
-    console.log("[API POST] Server SMTP gata de trimitere.");
-
-    const mailPayload = {
-      from: `Pixelflow Studio <${config.from}>`,
-      to: config.to,
+    await transporter.sendMail({
+      from: `"Pixelflow Studio" <${getEnv("SMTP_USER")}>`,
+      to: getEnv("CONTACT_TO") || getEnv("SMTP_USER"),
       replyTo: email,
       subject: `Proiect Nou: ${name}`,
-      html: buildHtml(
-        name,
-        email,
-        String(body?.company || ""),
-        String(body?.budget || ""),
-        message,
-      ),
-    };
-
-    console.log("[API POST] Se trimite mail-ul...");
-    const info = await transporter.sendMail(mailPayload);
-    console.log("[API POST] Succes! ID Mesaj:", info.messageId);
+      html: buildHtml(name, email, company, budget, message),
+    });
 
     return new Response(JSON.stringify({ message: "Mesaj trimis!" }), {
       status: 200,
     });
-  } catch (error: any) {
-    console.error("[API POST] EROARE:");
-    console.error("- Mesaj:", error.message);
-    console.error("- Cod:", error.code);
-    console.error("- Stack:", error.stack);
-
+  } catch (e: any) {
     return new Response(
-      JSON.stringify({
-        message: "Eroare server.",
-        debug: error.message,
-      }),
+      JSON.stringify({ message: "Eroare server.", debug: e.message }),
       { status: 500 },
     );
   }
+};
+
+export const GET: APIRoute = async () => {
+  return new Response(JSON.stringify({ message: "Not allowed." }), {
+    status: 405,
+  });
 };

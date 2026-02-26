@@ -5,6 +5,9 @@ const MIN_FILL_TIME_MS = 2500;
 type FieldKey = "name" | "email" | "message";
 type FieldInput = HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement;
 
+// Helper pentru a accesa Turnstile fără erori de tip
+const getTurnstile = () => (window as any).turnstile;
+
 const initContactForm = (root: Element) => {
   const form = root as HTMLFormElement;
   if (form.dataset.contactInit === "true") return;
@@ -39,6 +42,7 @@ const initContactForm = (root: Element) => {
     company: form.querySelector<HTMLInputElement>('input[name="company"]'),
     budget: form.querySelector<HTMLSelectElement>('select[name="budget"]'),
   };
+
   const errorEls: Record<FieldKey, HTMLElement | null> = {
     name: form.querySelector<HTMLElement>('[data-contact-error-for="name"]'),
     email: form.querySelector<HTMLElement>('[data-contact-error-for="email"]'),
@@ -110,15 +114,29 @@ const initContactForm = (root: Element) => {
     event.preventDefault();
     const L = getLang();
 
-    if ((honeypot?.value || "").trim().length > 0) {
+    const formData = new FormData(form);
+    const turnstileResponse = formData.get("cf-turnstile-response");
+
+    if (!turnstileResponse) {
       updateStatus(
-        L === "en" ? "Request denied." : "Nu am putut procesa trimiterea.",
+        L === "en"
+          ? "Please complete the Captcha."
+          : "Te rugăm să completezi Captcha.",
         "error",
       );
       return;
     }
 
-    if (Date.now() - Number(startedAtField.value || "0") < MIN_FILL_TIME_MS) {
+    if ((honeypot?.value || "").trim().length > 0) {
+      updateStatus(
+        L === "en" ? "Request denied." : "Cerere respinsă.",
+        "error",
+      );
+      return;
+    }
+
+    const timeDiff = Date.now() - Number(startedAtField.value || "0");
+    if (timeDiff < MIN_FILL_TIME_MS) {
       updateStatus(
         L === "en"
           ? "Please fill the form naturally."
@@ -136,6 +154,7 @@ const initContactForm = (root: Element) => {
       budget: fields.budget?.value.trim() ?? "",
       honeypot: honeypot?.value ?? "",
       startedAt: Number(startedAtField.value),
+      "cf-turnstile-response": turnstileResponse,
     };
 
     const errors: Record<FieldKey, string> = {
@@ -181,6 +200,10 @@ const initContactForm = (root: Element) => {
         "success",
       );
       form.reset();
+
+      const ts = getTurnstile();
+      if (ts) ts.reset();
+
       startedAtField.value = String(Date.now());
       (Object.keys(validators) as FieldKey[]).forEach((key) =>
         setFieldError(key, fields[key], ""),
@@ -194,6 +217,8 @@ const initContactForm = (root: Element) => {
       }, 6000);
     } catch (error) {
       updateStatus(error instanceof Error ? error.message : "Error.", "error");
+      const ts = getTurnstile();
+      if (ts) ts.reset();
     } finally {
       submitButton.disabled = false;
       submitButton.textContent = originalBtnText;

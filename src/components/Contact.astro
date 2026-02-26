@@ -11,7 +11,11 @@ const company = {
   email: 'pixelflow.contact@gmail.com',
   phone: '+40 784 360 067',
 };
+
+const SITE_KEY = '0x4AAAAAACixDz2zMSFVWeZC'; 
 ---
+
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
 <section id="contact" class="relative w-full overflow-hidden bg-[#03060d] py-24">
   <div class="absolute bottom-40 left-0 h-72 w-72 rounded-full bg-amber-200/10 blur-[95px] pointer-events-none"></div>
@@ -77,8 +81,7 @@ const company = {
       <div class="lg:col-span-7">
         <form data-contact-form class="flex h-full flex-col gap-5 rounded-3xl border border-white/10 bg-white/2 p-6 md:p-8 shadow-2xl shadow-black/40" novalidate>
           <input type="text" name="honeypot" tabindex="-1" autocomplete="off" class="hidden" aria-hidden="true" />
-          <input type="hidden" name="form_started_at" data-form-started-at />
-
+          
           <div class="grid gap-5 md:grid-cols-2">
             <label class="flex flex-col gap-2" for="contact-name">
               <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400 ml-1">{lang === 'ro' ? 'Nume' : 'Full Name'}</span>
@@ -90,7 +93,7 @@ const company = {
               <span class="text-[11px] font-bold uppercase tracking-[0.14em] text-zinc-400 ml-1">Email</span>
               <input id="contact-email" class="contact-input w-full rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-amber-200/40 transition-all" type="email" name="email" placeholder="hello@company.com" required />
               <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider ml-1 mt-1 hidden" data-contact-error-for="email"></span>
-          
+            </label>
           </div>
 
           <div class="grid gap-5 md:grid-cols-2">
@@ -121,6 +124,8 @@ const company = {
             <textarea id="contact-message" class="w-full flex-1 min-h-32 resize-none rounded-xl border border-white/10 bg-white/5 p-4 text-sm text-white outline-none focus:border-amber-200/40 transition-all" name="message" placeholder={lang === 'ro' ? 'Spune-ne mai multe despre proiectul tău...' : 'Tell us more about your project...'} required></textarea>
             <span class="text-[10px] font-bold text-rose-400 uppercase tracking-wider ml-1 mt-1 hidden" data-contact-error-for="message"></span>
           </label>
+
+          <div class="cf-turnstile" data-sitekey={SITE_KEY} data-theme="dark"></div>
 
           <div class="mt-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between border-t border-white/5 pt-6">
             <p data-contact-status class="text-[11px] font-bold uppercase tracking-widest text-zinc-500 transition-colors">
