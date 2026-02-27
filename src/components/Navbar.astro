@@ -4,89 +4,60 @@ import { Menu, X, ArrowUpRight } from "lucide-react";
 import LanguagePicker from "@/components/LanguagePicker.astro";
 import { ui } from '@/i18n/ui';
 
-const { lang = 'ro' } = Astro.props;
-const t = ui[lang as keyof typeof ui];
+// Detectăm limba direct din URL: dacă începe cu /en, e engleză, altfel e română
+const { pathname } = Astro.url;
+const lang = pathname.startsWith('/en') ? 'en' : 'ro';
+const t = ui[lang];
 
-// Setăm baza URL-ului pentru ca linkurile să ducă spre secțiunile corecte (/en/#contact vs /#contact)
-const basePath = lang === 'en' ? '/en' : '';
+const langPrefix = lang === 'en' ? '/en' : '';
 
 const navItems = [
-  { name: t['footer.nav.home'], href: `${basePath}/#home` },
-  { name: t['footer.nav.services'], href: `${basePath}/#services` },
-  { name: t['footer.nav.work'], href: `${basePath}/#work` },
-  { name: t['footer.nav.test'], href: `${basePath}/#testimonials` },
+  { name: t['footer.nav.home'], href: `${langPrefix}/#home` },
+  { name: t['footer.nav.services'], href: `${langPrefix}/#services` },
+  { name: t['footer.nav.work'], href: `${langPrefix}/#work` },
+  { name: t['footer.nav.test'], href: `${langPrefix}/#testimonials` },
 ];
 ---
 
-<nav
-  id="main-nav"
-  class="fixed top-8 left-0 right-0 z-100 flex justify-center px-3 sm:px-6 transition-all duration-500 ease-out"
->
-  <div
-    id="nav-container"
-    class="relative z-110 flex h-13 w-full max-w-6xl items-center justify-between rounded-full border border-white/10 bg-[#03060d]/60 pl-2 pr-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-2xl transition-all duration-500 ease-in-out sm:h-14"
-  >
-    <a href={`${basePath}/#home`} class="flex items-center gap-3 pl-4 shrink-0">
-      <div class="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black italic text-[12px]">
-        PF
-      </div>
-      <span class="text-white font-black tracking-tighter text-sm hidden sm:block">
-        PIXELFLOW
-      </span>
+<nav id="main-nav" class="fixed top-8 left-0 right-0 z-100 flex justify-center px-3 sm:px-6 transition-all duration-500 ease-out">
+  <div id="nav-container" class="relative z-110 flex h-13 w-full max-w-6xl items-center justify-between rounded-full border border-white/10 bg-[#03060d]/60 pl-2 pr-1.5 shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-2xl transition-all duration-500 ease-in-out sm:h-14">
+    
+    <a href={`${langPrefix}/#home`} class="flex items-center gap-3 pl-4 shrink-0">
+      <div class="w-8 h-8 bg-white text-black rounded-lg flex items-center justify-center font-black italic text-[12px]">PF</div>
+      <span class="text-white font-black tracking-tighter text-sm hidden sm:block">PIXELFLOW</span>
     </a>
 
     <div class="hidden md:flex items-center gap-1 bg-white/5 border border-white/5 rounded-full p-1 h-10">
       {navItems.map((item) => (
-        <a
-          href={item.href}
-          class="px-5 py-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-300 hover:text-amber-100 transition-all rounded-full hover:bg-white/5"
-        >
+        <a href={item.href} class="px-5 py-1.5 text-[10px] uppercase tracking-[0.2em] font-bold text-zinc-300 hover:text-amber-100 transition-all rounded-full hover:bg-white/5">
           {item.name}
         </a>
       ))}
     </div>
 
     <div class="flex items-center gap-2">
-      <LanguagePicker />
-
-      <a href={`${basePath}/#contact`}>
-        <Button
-          client:idle
-          variant="ghost"
-          className="hidden md:flex items-center h-10 rounded-full px-6 bg-white/5 border border-amber-200/20 text-amber-100/90 font-bold uppercase tracking-[0.15em] text-[10px] hover:bg-white/10 hover:border-amber-200/50 transition-all duration-300"
-        >
+      <LanguagePicker lang={lang} />
+      <a href={`${langPrefix}/#contact`}>
+        <Button client:idle variant="ghost" className="hidden md:flex items-center h-10 rounded-full px-6 bg-white/5 border border-amber-200/20 text-amber-100/90 font-bold uppercase tracking-[0.15em] text-[10px] hover:bg-white/10 hover:border-amber-200/50 transition-all duration-300">
           {t['footer.nav.contact']} <ArrowUpRight className="ml-2 w-3.5 h-3.5 text-amber-200/70" />
         </Button>
       </a>
-      <button
-        id="mobile-menu-toggle"
-        class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white transition-all hover:text-amber-200 outline-none z-120"
-        aria-label="Toggle Menu"
-      >
+
+      <button id="mobile-menu-toggle" class="md:hidden w-10 h-10 flex items-center justify-center rounded-full bg-white/10 text-white transition-all hover:text-amber-200 outline-none z-120">
         <Menu className="w-5 h-5 menu-icon" />
         <X className="w-5 h-5 close-icon hidden" />
       </button>
     </div>
 
-    <div
-      id="mobile-menu"
-      class="absolute top-[calc(100%+1rem)] left-0 right-0 z-100 -translate-y-5 rounded-4xl border border-white/10 bg-[#03060d]/95 p-6 opacity-0 shadow-2xl shadow-black backdrop-blur-3xl pointer-events-none transition-all duration-500 md:hidden sm:p-8"
-    >
+    <div id="mobile-menu" class="absolute top-[calc(100%+1rem)] left-0 right-0 z-100 -translate-y-5 rounded-4xl border border-white/10 bg-[#03060d]/95 p-6 opacity-0 shadow-2xl shadow-black backdrop-blur-3xl pointer-events-none transition-all duration-500 md:hidden sm:p-8">
       <nav class="flex flex-col gap-6">
         {navItems.map((item) => (
-          <a
-            href={item.href}
-            class="mobile-link text-xl font-bold text-zinc-400 hover:text-amber-200 transition-colors tracking-tight"
-          >
+          <a href={item.href} class="mobile-link text-xl font-bold text-zinc-400 hover:text-amber-200 transition-colors tracking-tight">
             {item.name}
           </a>
         ))}
-        <a href={`${basePath}/#contact`}>
-          <Button
-            client:idle
-            variant="ghost"
-            className="flex w-full items-center justify-center h-14 rounded-2xl bg-white/5 border border-amber-200/20 text-amber-100/90 font-bold uppercase tracking-[0.15em] text-xs hover:bg-white/10 hover:border-amber-200/50 transition-all duration-300"
-          >
+        <a href={`${langPrefix}/#contact`}>
+          <Button client:idle variant="ghost" className="flex w-full items-center justify-center h-14 rounded-2xl bg-white/5 border border-amber-200/20 text-amber-100/90 font-bold uppercase tracking-[0.15em] text-xs hover:bg-white/10 hover:border-amber-200/50 transition-all duration-300">
             {t['footer.nav.contact']} <ArrowUpRight className="ml-2 w-4 h-4 text-amber-200/70" />
           </Button>
         </a>
@@ -95,16 +66,11 @@ const navItems = [
   </div>
 </nav>
 
-<div
-  id="nav-overlay"
-  class="fixed inset-0 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 z-90 md:hidden"
-></div>
+<div id="nav-overlay" class="fixed inset-0 bg-black/60 backdrop-blur-sm opacity-0 pointer-events-none transition-opacity duration-500 z-90 md:hidden"></div>
 
 <script>
   import { initNavbar } from "@/scripts/nav";
-
   initNavbar();
-
   document.addEventListener("astro:after-swap", () => {
     initNavbar();
   });

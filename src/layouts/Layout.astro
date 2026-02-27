@@ -2,20 +2,21 @@
 import Navbar from '@/components/Navbar.astro';
 import '../styles/global.css';
 import CookieBanner from '@/components/CookieBanner.astro';
-const { lang = 'ro' } = Astro.props;
-const { title = 'Pixelflow' } = Astro.props as { title?: string };
+
+const lang = Astro.currentLocale || 'ro';
+const { title = 'Pixelflow' } = Astro.props;
 ---
 <!doctype html>
 <html lang={lang}>
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/logo.svg" />
-		<title>{title}</title>
-	</head>
-	<body class="bg-black">
-<Navbar />
-<CookieBanner lang={lang} />
-	<slot />
-  </body>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+        <title>{title}</title>
+    </head>
+    <body class="bg-black">
+        <Navbar lang={lang}/>
+        <CookieBanner lang={lang} />
+        <slot />
+    </body>
 </html>

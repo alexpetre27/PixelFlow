@@ -1,3 +1,8 @@
+export const languages = {
+  ro: "Română",
+  en: "English",
+};
+export const defaultLang = "ro";
 export const ui = {
   ro: {
     "hero.subtitle": "Dar câți se opresc să cumpere?",
