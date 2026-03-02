@@ -87,7 +87,7 @@ export const POST: APIRoute = async ({ request }) => {
     });
 
     await transporter.sendMail({
-      from: `"Pixelflow Studio" <${getEnv("SMTP_USER")}>`,
+      from: `"StackStory" <${getEnv("SMTP_USER")}>`,
       to: getEnv("CONTACT_TO") || getEnv("SMTP_USER"),
       replyTo: email,
       subject: `Proiect Nou: ${name}`,
